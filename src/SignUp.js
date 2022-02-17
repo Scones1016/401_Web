@@ -1,5 +1,6 @@
 import './App.css';
 import React, {Component} from 'react';
+import CreateUser from './components/CreateUser';
 
 class SignUp extends Component{
   componentDidMount(){
@@ -13,17 +14,7 @@ class SignUp extends Component{
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.close = this.close.bind(this);
-    this.createUser = this.createUser.bind(this);
   }
-
-   createUser(data) {
-    const response = await fetch(`/auth/signUp`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-      })
-    return await response.json();
-}
 
   handleSubmit = () => {
     if(!this.state.input["email"].includes('@'))
@@ -39,7 +30,7 @@ class SignUp extends Component{
         alert("Your password is empty");
     }
     else{
-        createUser(this.state.input)
+        CreateUser(this.state.input)
           .then(response => {
             console.log(response);
         });
@@ -66,15 +57,12 @@ class SignUp extends Component{
         <div class="Form">  
         <button type="button" className="close" aria-label="Close" onClick={this.close}>
             <span>×</span>
-        </button> 
-          <h1>Sign Up</h1>  
+        </button>
           <p>Email:  
             <br/>
               <input class="input" type="email" name="email" value={this.state.input.username} onChange={this.handleChange}/>  
           </p>  
-          <br/>
-          <br/> 
-          <p>Compan:  
+          <p>Company:  
             <br/>
               <input class="input" type="text" name="company" value={this.state.input.company} onChange={this.handleChange}/>  
           </p>  
@@ -83,7 +71,6 @@ class SignUp extends Component{
               <br/>
               <input class="input" type="password" name="password" value={this.state.input.password} onChange={this.handleChange} />  
           </p>  
-          <br/>
           <input type="submit" value="Sign Up" className="submitB" onClick={this.handleSubmit}/>  
         </div>  
     </div>
