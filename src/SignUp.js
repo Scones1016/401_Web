@@ -54,10 +54,11 @@ class SignUp extends Component{
   render(){
   return (
     <div className="App">
-        <div class="Form">  
+        <div class="SignUp-Form">  
         <button type="button" className="close" aria-label="Close" onClick={this.close}>
             <span>×</span>
         </button>
+        <h1>Sign Up</h1>
           <p>Email:  
             <br/>
               <input class="input" type="email" name="email" value={this.state.input.username} onChange={this.handleChange}/>  
