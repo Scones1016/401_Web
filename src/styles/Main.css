@@ -73,7 +73,7 @@
   
   .search-input{
     height: 30px;
-    width: 30%;
+    width: 23%;
     margin-top: 2%;
     margin-left: 2%;
     margin-right: 2%;
@@ -84,7 +84,7 @@
   
   .search-submitB{
     height: 30px;
-    width: 100px;
+    width: 10%;
     /* margin-top: 5px; */
     margin-top: 2%;
     margin-left: 2%;
@@ -92,6 +92,58 @@
     background-color: rgb(190, 190, 190);
     border: 2px solid #CBEFED;
     border-radius: 10px;
+  }
+
+  .loginsignupgroup{
+    height: 30px;
+    width: 10%;
+    font-size: 14px;
+    text-decoration: none;
+    color: black;
+    /* margin-top: 5px; */
+    margin-top: 2%;
+    /* margin-left: 2%; */
+    /* margin-right: 2%; */
+    background-color: rgb(180, 255, 255);
+    border: 2px solid #CBEFED;
+    border-radius: 10px;
+  }
+
+
+  .Filters{
+    display: flex;
+    /* height: 30px; */
+    width: 100%;
+    color: black;
+    /* margin-top: 5px; */
+    /* margin-top: 2%; */
+    /* margin-left: 2%; */
+    /* margin-right: 2%; */
+  }
+
+  .filter
+  {
+    /* width: 20%; */
+  }
+
+  .filter-button{
+    /* height: 30px; */
+    width: 100%;
+    font-size: 15px;
+    /* text-decoration: none; */
+    color: black;
+    /* margin-top: 5px;
+    margin-top: 4%;
+    margin-left: 4%;
+    margin-right: 2%; */
+    background-color: rgb(219, 219, 219);
+    border: 2px solid rgb(219, 219, 219);
+    border-radius: 10px;
+  }
+
+  .Types{
+    z-index: 1;
+    position: absolute;
   }
   
   @keyframes App-logo-spin {

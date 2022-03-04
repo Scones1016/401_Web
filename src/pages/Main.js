@@ -13,10 +13,14 @@ class Main extends Component{
         super();
         this.state = {
             showTypesBool: false,
+
+            showMapBool: false,
             input : {}
         }
         this.showTypes = this.showTypes.bind(this);
         this.closeTypes = this.closeTypes.bind(this);
+
+        this.showMap = this.showMap.bind(this);
         this.jquerycode = this.jquerycode.bind(this);
     }
 
@@ -41,9 +45,28 @@ class Main extends Component{
         //         document.removeEventListener('click', this.closeTypes);
         //     });
         // }
-        this.setState({ showTypesBool: false }, () => {
-            document.removeEventListener('click', this.closeTypes);
-        });
+        // this.setState({ showTypesBool: false }, () => {
+        //     document.removeEventListener('click', this.closeTypes);
+        // });
+    }
+
+    TypesResults = () => (
+        <div
+            className="Types"
+            ref={(element) => {
+            this.typesdropdown = element;
+            }}
+        >
+            <button> Type 1 </button>
+            <button> Type 2 </button>
+            <button> Type 3 </button>
+        </div>
+    )
+
+    showMap(event) {
+        event.preventDefault();
+
+        this.setState({ showMapBool: !this.showMapBool });
     }
 
 
@@ -58,61 +81,98 @@ class Main extends Component{
                         <input name="Search" class="search-input" placeholder="Search" type="text" name="search" value={this.state.input.search} onChange={this.handleChange}/>  
                         <input name="Location" class="search-input" placeholder="Location" type="text" name="search" value={this.state.input.search} onChange={this.handleChange}/>  
                         <input type="submit" value="Find" className="search-submitB" onClick={this.handleSubmit}/>  
-                        <Link to ="../"> Log In</Link>&nbsp;&nbsp;&nbsp;
-                        <Link to="../signup"> Sign Up</Link>
+                        <Link to ="../" class="loginsignupgroup">Log In</Link>
+                        &nbsp;or&nbsp; 
+                        <Link to="../signup" class="loginsignupgroup">Sign Up</Link>
                     </form>
                 </div>
-                <Map></Map>
+                
                 <div className="Filters">
 
-                    type
-
-                    <div>
-                        <button onClick={this.showTypes}>
+                    <div className="filter">
+                        <button className="filter-button" onClick={this.showTypes}>
                         Show Types
                         </button>
-                        
                         {
-                        this.state.showTypesBool
-                            ? (
-                                <div
-                                    className="Types"
-                                    ref={(element) => {
-                                    this.typesdropdown = element;
-                                    }}
-                                >
-                                    <button> Type 1 </button>
-                                    <button> Type 2 </button>
-                                    <button> Type 3 </button>
-                                </div>
-                            )
-                            : (
-                            null
-                            )
+                            this.state.showTypesBool
+                                ? ( <this.TypesResults /> )
+                                : ( null )
+                        }
+                    </div>
+
+                    <div className="filter">
+                        <button className="filter-button" onClick={this.showRemotes}>
+                        Remote
+                        </button>
+                        {
+                            this.state.showRemotesBool
+                                ? ( <this.RemotesResults /> )
+                                : ( null )
+                        }
+                    </div>
+
+                    <div className="filter">
+                        <button className="filter-button" onClick={this.showSalaries}>
+                        Salary
+                        </button>
+                        {
+                            this.state.showSalariesBool
+                                ? ( <this.SalariesResults /> )
+                                : ( null )
+                        }
+                    </div>
+
+                    <div className="filter">
+                        <button className="filter-button" onClick={this.showNames}>
+                        Company Name
+                        </button>
+                        {
+                            this.state.showNamesBool
+                                ? ( <this.NamesResults /> )
+                                : ( null )
+                        }
+                    </div>
+
+                    <div className="filter">
+                        <button className="filter-button" onClick={this.showSizes}>
+                        Company size
+                        </button>
+                        {
+                            this.state.showSizesBool
+                                ? ( <this.SizesResults /> )
+                                : ( null )
                         }
                     </div>
 
 
-                    remote
+                    <div className="filter">
+                        <button className="filter-button" onClick={this.showDates}>
+                        Date Posted
+                        </button>
+                        {
+                            this.state.showDatesBool
+                                ? ( <this.DatesResults /> )
+                                : ( null )
+                        }
+                    </div>
 
 
-
-                    salary
-
-
-
-                    company name
-
-
-                    company size
-
-
-                    date posted
-
-
-
-                    location
                 </div>
+
+
+
+                <br/>
+                <br/>
+                <br/>
+                <button onClick={this.showMap}>
+                Show Map
+                </button>
+                    {
+                    this.state.showMapBool
+                        ? ( <Map></Map> )
+                        : ( null )
+                    }
+                        
  
             </div>
 
