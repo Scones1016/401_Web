@@ -4,5 +4,5 @@ export default async function createUser(data) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
       })
-    return await response.json();
+    return await response;
 }

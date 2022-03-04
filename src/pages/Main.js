@@ -1,16 +1,11 @@
-import './Main.css';
-import './App.css';
+import '../styles/Main.css';
+import '../App.css';
 import React, {Component} from 'react';
-
-// import "@progress/kendo-theme-default/dist/all.css";  
-// import { DropDown } from "./components/JobTypeDropDown";  
-
-
-
-
-
+import {Link} from 'react-router-dom';
+import Map from './Map.js';
 
 class Main extends Component{
+
     componentDidMount(){
         document.title = 'Job Searching';
     }
@@ -20,15 +15,13 @@ class Main extends Component{
             showTypesBool: false,
             input : {}
         }
-        // this.handleSubmit = this.handleSubmit.bind(this);
-        // this.handleChange = this.handleChange.bind(this);
-        // this.close = this.close.bind(this);
-
         this.showTypes = this.showTypes.bind(this);
         this.closeTypes = this.closeTypes.bind(this);
-
+        this.jquerycode = this.jquerycode.bind(this);
     }
 
+    jquerycode = () =>{
+    }
 
     Search = () => {
         return <div>Hello world!</div>
@@ -59,18 +52,16 @@ class Main extends Component{
         return(
             
             <div className="Main">
-
                 <div className="Header">
                     
                     <form action="/" method="get">
                         <input name="Search" class="search-input" placeholder="Search" type="text" name="search" value={this.state.input.search} onChange={this.handleChange}/>  
                         <input name="Location" class="search-input" placeholder="Location" type="text" name="search" value={this.state.input.search} onChange={this.handleChange}/>  
                         <input type="submit" value="Find" className="search-submitB" onClick={this.handleSubmit}/>  
+                        <Link to ="../"> Log In</Link>&nbsp;&nbsp;&nbsp;
+                        <Link to="../signup"> Sign Up</Link>
                     </form>
-
                 </div>
-
-
                 <div className="Filters">
 
                     type
@@ -121,9 +112,7 @@ class Main extends Component{
 
                     location
                 </div>
-
-
-
+ 
             </div>
 
         );

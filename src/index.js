@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import SignUp from "./SignUp";
-import Main from "./Main";
+import App from './pages/LogIn';
+import SignUp from "./pages/SignUp";
+import Main from "./pages/Main";
+import ProfilePage from "./pages/ProfilePage";
+import Map from "./pages/Map";
 import reportWebVitals from './reportWebVitals';
 import { HashRouter as BrowserRouter,Switch, Route} from 'react-router-dom';
 
@@ -14,6 +16,8 @@ ReactDOM.render(
           <Route exact path="/" component={App}/>
           <Route exact path="/signup" component={SignUp}/>
           <Route exact path="/main" component={Main}/>
+          <Route exact path="/profilepage" component={ProfilePage}/>
+          <Route exact path="/Map" component={Map}/>
       </Switch>
     </BrowserRouter>
   </React.StrictMode>,

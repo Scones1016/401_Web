@@ -1,0 +1,35 @@
+.ProfileName0{
+    height: 250px;
+    width: 46.5%;
+    margin-left: 1%;
+    margin-right: 1%;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    border: 2px solid black;
+    border-radius: 10px;
+    float : left;
+    margin-bottom: 20px;
+}
+
+.ProfileName1{
+    height: 250px;
+    width: 46.5%;
+    margin-left: 1%;
+    margin-right: 1%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    float: right;
+    margin-bottom: 20px;
+}
+
+.button{
+    height: 30px;
+    background-color: #CBEFED;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}

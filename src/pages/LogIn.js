@@ -1,6 +1,7 @@
-import './App.css';
+import '../App.css';
 import React, {Component} from 'react';
 import Form from 'react-bootstrap';
+import getUser from '../components/getUser';
 import {Link} from 'react-router-dom';
 
 class App extends Component{
@@ -14,14 +15,14 @@ class App extends Component{
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.clost = this.close.bind(this);
+    this.close = this.close.bind(this);
   }
 
   handleSubmit = () => {
     console.log(this.state.input["password"]);
     if(!this.state.input["email"].includes('@'))
     {
-      alert("You email is invalid, please reenter your email");
+      alert("You email is invalid, please re-enter your email");
     }
     else if(this.state.input["password"] == undefined)
     {
@@ -29,7 +30,12 @@ class App extends Component{
     }
     else
     {
+      getUser(this.state.input)
+        .then(response => {
+          console.log(response);
+      });
       alert("submitting");
+      this.props.history.push("./profilepage");
     }
   }
 
@@ -42,7 +48,7 @@ class App extends Component{
   }
 
   close = () => {
-    this.props.history.push("./main");
+    this.props.history.push("/main");
   }
   
   render(){
@@ -52,7 +58,6 @@ class App extends Component{
         <button type="button" class="close" aria-label="Close" onClick={this.close}>
         <span>×</span>
         </button> 
-          <h1>Log In</h1>  
           <p>Email:  
             <br/>
               <input class="input" type="email" name="email" value={this.state.input.username} onChange={this.handleChange}/>  
@@ -62,7 +67,7 @@ class App extends Component{
               <br/>
               <input class="input" type="password" name="password" value={this.state.input.password} onChange={this.handleChange} />  
           </p> 
-          <Link to = "./signup"> Forgot Password? </Link>
+          <Link to = "./signup"> Don't have an account? Sign Up </Link>
           <br/>
           <input className="submitB" type="submit" value="Log In" onClick={this.handleSubmit}/>  
         </div>  

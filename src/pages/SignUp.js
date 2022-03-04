@@ -1,6 +1,7 @@
-import './App.css';
+import '../App.css';
 import React, {Component} from 'react';
-import CreateUser from './components/CreateUser';
+import CreateUser from '../components/CreateUser';
+import {Link} from 'react-router-dom';
 
 class SignUp extends Component{
   componentDidMount(){
@@ -34,7 +35,10 @@ class SignUp extends Component{
           .then(response => {
             console.log(response);
         });
-        alert("submitting");        
+        localStorage.setItem("email", this.state.input["email"]);
+        localStorage.setItem("company", this.state.input["company"]);
+        alert("submitting");      
+        this.props.history.push("./profilepage");  
 	  }
   }
 
@@ -54,24 +58,22 @@ class SignUp extends Component{
   render(){
   return (
     <div className="App">
-        <div class="SignUp-Form">  
+        <div class="Form">  
         <button type="button" className="close" aria-label="Close" onClick={this.close}>
             <span>×</span>
         </button>
-        <h1>Sign Up</h1>
           <p>Email:  
-            <br/>
               <input class="input" type="email" name="email" value={this.state.input.username} onChange={this.handleChange}/>  
           </p>  
-          <p>Company:  
-            <br/>
+          <p>Company: 
               <input class="input" type="text" name="company" value={this.state.input.company} onChange={this.handleChange}/>  
           </p>  
           <p>  
               Password:  
-              <br/>
               <input class="input" type="password" name="password" value={this.state.input.password} onChange={this.handleChange} />  
           </p>  
+          <Link to="./">Already have an account? </Link>
+          <br/>
           <input type="submit" value="Sign Up" className="submitB" onClick={this.handleSubmit}/>  
         </div>  
     </div>
