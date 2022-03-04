@@ -62,6 +62,7 @@ class Main extends Component{
                         <Link to="../signup"> Sign Up</Link>
                     </form>
                 </div>
+                <Map></Map>
                 <div className="Filters">
 
                     type
