@@ -13,12 +13,16 @@ class Main extends Component{
         super();
         this.state = {
             showTypesBool: false,
+            showRemotesBool: false,
 
             showMapBool: false,
             input : {}
         }
         this.showTypes = this.showTypes.bind(this);
         this.closeTypes = this.closeTypes.bind(this);
+
+        this.showRemotes = this.showRemotes.bind(this);
+        this.closeRemotes = this.closeRemotes.bind(this);
 
         this.showMap = this.showMap.bind(this);
         this.jquerycode = this.jquerycode.bind(this);
@@ -57,9 +61,71 @@ class Main extends Component{
             this.typesdropdown = element;
             }}
         >
-            <button> Type 1 </button>
-            <button> Type 2 </button>
-            <button> Type 3 </button>
+            <button> Full Time </button>
+            <button> Part Time </button>
+            <button> Internship </button>
+        </div>
+    )
+
+    showRemotes(event) {
+        event.preventDefault();
+        
+        this.setState({ showRemotesBool: true }, () => {
+            document.addEventListener('click', this.closeRemotes);
+        });
+    }
+    closeRemotes(event) {
+        // if (!this.typesdropdown.contains(event.target)) {
+        //     this.setState({ showRemotesBool: false }, () => {
+        //         document.removeEventListener('click', this.closeRemotes);
+        //     });
+        // }
+        // this.setState({ showRemotesBool: false }, () => {
+        //     document.removeEventListener('click', this.closeRemotes);
+        // });
+    }
+
+    RemotesResults = () => (
+        <div
+            className="Remotes"
+            ref={(element) => {
+            this.remotesdropdown = element;
+            }}
+        >
+            <button> In Person </button>
+            <button> Remote </button>
+        </div>
+    )
+
+    SalariesResults = () => (
+        <div>
+            <form action="/" method="get">
+                <input name="Search" placeholder="Salary" type="text" name="salarysearch" value={this.state.input.search} onChange={this.handleChange}/>  
+            </form>
+        </div>
+    )
+
+    NamesResults = () => (
+        <div>
+            <form action="/" method="get">
+                <input name="Search" placeholder="Company Name" type="text" name="companysearch" value={this.state.input.search} onChange={this.handleChange}/>  
+            </form>
+        </div>
+    )
+
+    SizesResults = () => (
+        <div>
+            <form action="/" method="get">
+                <input name="Search" placeholder="Company Size" type="text" name="sizesearch" value={this.state.input.search} onChange={this.handleChange}/>  
+            </form>
+        </div>
+    )
+
+    DatesResults = () => (
+        <div>
+            <form action="/" method="get">
+                <input name="Search" placeholder="Posted after MM/DD/YYYY" type="text" name="datesearch" value={this.state.input.search} onChange={this.handleChange}/>  
+            </form>
         </div>
     )
 
@@ -81,6 +147,7 @@ class Main extends Component{
                         <input name="Search" class="search-input" placeholder="Search" type="text" name="search" value={this.state.input.search} onChange={this.handleChange}/>  
                         <input name="Location" class="search-input" placeholder="Location" type="text" name="search" value={this.state.input.search} onChange={this.handleChange}/>  
                         <input type="submit" value="Find" className="search-submitB" onClick={this.handleSubmit}/>  
+                        &nbsp;Employer?&nbsp;
                         <Link to ="../" class="loginsignupgroup">Log In</Link>
                         &nbsp;or&nbsp; 
                         <Link to="../signup" class="loginsignupgroup">Sign Up</Link>
@@ -91,7 +158,7 @@ class Main extends Component{
 
                     <div className="filter">
                         <button className="filter-button" onClick={this.showTypes}>
-                        Show Types
+                        Types
                         </button>
                         {
                             this.state.showTypesBool
@@ -112,47 +179,27 @@ class Main extends Component{
                     </div>
 
                     <div className="filter">
-                        <button className="filter-button" onClick={this.showSalaries}>
-                        Salary
-                        </button>
                         {
-                            this.state.showSalariesBool
-                                ? ( <this.SalariesResults /> )
-                                : ( null )
+                            <this.SalariesResults />
                         }
                     </div>
 
                     <div className="filter">
-                        <button className="filter-button" onClick={this.showNames}>
-                        Company Name
-                        </button>
                         {
-                            this.state.showNamesBool
-                                ? ( <this.NamesResults /> )
-                                : ( null )
+                            <this.NamesResults />
                         }
                     </div>
 
                     <div className="filter">
-                        <button className="filter-button" onClick={this.showSizes}>
-                        Company size
-                        </button>
                         {
-                            this.state.showSizesBool
-                                ? ( <this.SizesResults /> )
-                                : ( null )
+                            <this.SizesResults />
                         }
                     </div>
 
 
                     <div className="filter">
-                        <button className="filter-button" onClick={this.showDates}>
-                        Date Posted
-                        </button>
                         {
-                            this.state.showDatesBool
-                                ? ( <this.DatesResults /> )
-                                : ( null )
+                            <this.DatesResults />
                         }
                     </div>
 
