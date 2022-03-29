@@ -1,0 +1,104 @@
+.wrap{
+    width: 80%;
+    margin-left: 10%;
+    height: 50px;
+}
+
+.post{
+    float: left;
+    width: 40%;
+    margin-top: 20px;
+}
+
+.info{
+    float: right;
+    margin-left: 20%;
+    margin-top: 20px;
+}
+
+.Card{
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 600px;
+    background-color: #CBEFED;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.Left{
+    width: 45%;
+    float : left;
+    margin-left: 5%;
+}
+
+.Secn{
+    width: 50%;
+    float : right;
+}
+
+.inpu{
+    margin-left: 0%;
+    width: 80%;
+    height: 30px;
+    margin-right: 30%;
+    margin-bottom: 20px;
+    border: 2px solid white;
+    border-radius: 9px;
+}
+
+.inputrange{
+    height: 30px;
+    width: 20%;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-bottom: 20px;
+    border: 2px solid white;
+    border-radius: 9px;
+}
+
+.inputlarge{
+    height: 350px;
+    width: 80%;
+    margin-right: 30%;
+    margin-bottom: 20px;
+    border: 2px solid white;
+    border-radius: 9px;
+}
+
+.remote{
+    float: left;
+    width: 60%;
+}
+
+.type{
+    float: right;
+    width: 40%;
+}
+
+.wrap2{
+    width : 100%;
+    margin-bottom: 5%;
+}
+
+.wrap3{
+    clear: both;
+}
+
+.subm{
+    margin-left: 66%;
+    margin-top: 55px;
+    border: 2px solid white;
+    border-radius: 9px;
+    width: 15%;
+    height: 30px;
+    background-color: white;
+}
+
+.back{
+    border: 2px solid white;
+    border-radius: 9px;
+    width: 15%;
+    height: 30px;
+    background-color: white;
+}

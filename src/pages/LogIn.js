@@ -1,6 +1,6 @@
 import '../App.css';
 import React, {Component} from 'react';
-import Form from 'react-bootstrap';
+import Form, { Alert } from 'react-bootstrap';
 import getUser from '../components/getUser';
 import {Link} from 'react-router-dom';
 
@@ -32,10 +32,17 @@ class App extends Component{
     {
       getUser(this.state.input)
         .then(response => {
-          console.log(response);
+          if(response.status == true)
+          {
+            localStorage.setItem("email", response.data.email);
+            localStorage.setItem("company", response.data.company);
+            this.props.history.push("./profilepage");
+          }
+          else
+          {
+            alert("Your email or password is incorrect");
+          }
       });
-      alert("submitting");
-      this.props.history.push("./profilepage");
     }
   }
 

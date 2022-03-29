@@ -3,11 +3,49 @@ import '../App.css';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Map from './Map.js';
+import getJob from '../components/GetJob.js';
+
+const JobLists = [
+    {
+        JobName: "First job",
+        Job_Description : "the description of the first job",
+        Posted_Date: "2021, 5, 3",
+        Salary: "100M",
+        id: 1
+    },
+    {
+        JobName: "Second Job",
+        Job_Description : "the description of the second job",
+        Posted_Date: "2021, 4, 3",
+        Salary : "200M",
+        id: 2
+    },
+    {
+        JobName: "Second Job",
+        Job_Description : "the description of the second job",
+        Posted_Date: "2021, 4, 3",
+        Salary : "200M",
+        id: 3
+    },
+    {
+        JobName: "Second Job",
+        Job_Description : "the description of the second job",
+        Posted_Date: "2021, 4, 3",
+        Salary : "200M",
+        id : 4
+    }
+]
 
 class Main extends Component{
 
     componentDidMount(){
-        document.title = 'Job Searching';
+        document.title = 'Job Searching'; 
+        getJob()
+        .then(response => {
+            this.setState({
+                data: response.data[0],
+            });
+        });
     }
     constructor(){
         super();
@@ -16,7 +54,8 @@ class Main extends Component{
             showRemotesBool: false,
 
             showMapBool: false,
-            input : {}
+            input : {},
+            data : {}
         }
         this.showTypes = this.showTypes.bind(this);
         this.closeTypes = this.closeTypes.bind(this);
@@ -219,7 +258,13 @@ class Main extends Component{
                         ? ( <Map></Map> )
                         : ( null )
                     }
-                        
+                    <div className="ProfileName0">
+                    <p>Job: </p>
+                    <p>Company : {this.state.data.title}</p>
+                    <p>Descrption : {this.state.data.description}</p>
+                    <p>Location : {this.state.data.location}</p>
+                    <p>Remote or Not : {this.state.data.remote}</p>
+                    </div> 
  
             </div>
 

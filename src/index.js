@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp";
 import Main from "./pages/Main";
 import ProfilePage from "./pages/ProfilePage";
 import Map from "./pages/Map";
+import AddProfile from "./pages/AddProfile";
 import reportWebVitals from './reportWebVitals';
 import { HashRouter as BrowserRouter,Switch, Route} from 'react-router-dom';
 
@@ -18,6 +19,7 @@ ReactDOM.render(
           <Route exact path="/main" component={Main}/>
           <Route exact path="/profilepage" component={ProfilePage}/>
           <Route exact path="/Map" component={Map}/>
+          <Route exact path="/AddProfile" component={AddProfile}/>
       </Switch>
     </BrowserRouter>
   </React.StrictMode>,

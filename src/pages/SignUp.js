@@ -18,15 +18,15 @@ class SignUp extends Component{
   }
 
   handleSubmit = () => {
-    if(!this.state.input["email"].includes('@'))
+    if(this.state.input["email"] == undefined || !this.state.input["email"].includes('@'))
     {
         alert("You email is invalid, please reenter your email");
     }
-    if(this.state.input["company"] == undefined)
+    else if(this.state.input["company"] == undefined)
     {
       alert("Your company cannot be empty")
     }
-    if(this.state.input["password"] == undefined)
+    else if(this.state.input["password"] == undefined)
     {
         alert("Your password is empty");
     }
@@ -58,7 +58,7 @@ class SignUp extends Component{
   render(){
   return (
     <div className="App">
-        <div class="Form">  
+        <div class="SignUp-Form">  
         <button type="button" className="close" aria-label="Close" onClick={this.close}>
             <span>×</span>
         </button>

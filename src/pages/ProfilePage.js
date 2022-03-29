@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import "../styles/Profile.css";
 import logo from "../images/logo.jpg";
 import JobPost from "../components/JobPost.js";
-import { Link } from 'react-router-dom';
+import { Link, useHistory} from 'react-router-dom';
+import getUser from '../components/getUser';
+import GetJob from '../components/GetJob';
 
 const JobLists = [
     {
@@ -37,15 +39,20 @@ const JobLists = [
 
 class ProfilePage extends Component{
     componentDidMount(){
-        
     }
 
     constructor(){
         super();
+        GetJob()
+        .then(response=>{
+            JobLists[0].JobName = response.data[0].title;
+            JobLists[0].Job_Description = response.data[0].description;
+        });
         this.state = {
             user : {},
             delete : false,
-            count : 0
+            count : 0,
+            AddJob : false,
         }
         const email = localStorage.getItem("email");
         const company = localStorage.getItem("company");
@@ -53,6 +60,7 @@ class ProfilePage extends Component{
         this.state.user["email"] = email;
         this.handleDelete = this.handleDelete.bind(this);
         this.submitLogout = this.submitLogout.bind(this);
+        this.AddJob = this.AddJob.bind(this);
         console.log(this.state.user["company"]);
     }
 
@@ -62,6 +70,10 @@ class ProfilePage extends Component{
 
     submitLogout = () =>{
         localStorage.clear();
+    }
+
+    AddJob = () =>{
+        this.props.history.push('/AddProfile');
     }
 
     render(){
@@ -74,7 +86,7 @@ class ProfilePage extends Component{
                     <Link to="./" onClick={this.submitLogout}>Logout</Link>
                 </div>
                 <span className="job"> Posted Jobs </span>
-                <button className="buttons"> &nbsp; Add Job &nbsp; </button>
+                <button className="buttons" onClick={this.AddJob}> &nbsp; Add Job &nbsp; </button>
                 <br/>
                 <div className="warp">
                 {JobLists.map(JobList=>(

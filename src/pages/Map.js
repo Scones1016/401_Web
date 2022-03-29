@@ -38,7 +38,6 @@ function MyComponent() {
         onUnmount={onUnmount}
       >
         { /* Child components, such as markers, info windows, etc. */ }
-        <></>
       </GoogleMap>
   ) : <></>
 }
