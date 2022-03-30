@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Map from './Map.js';
 import getJob from '../components/GetJob.js';
+// import JobSearch from '../components/JobSearch';
 
 const JobLists = [
     {
@@ -57,6 +58,16 @@ class Main extends Component{
             input : {},
             data : {}
         }
+        // this.handleKeywordChange = this.handleKeywordChange.bind(this);
+        // this.handleLocationChange = this.handleLocationChange.bind(this);
+
+        this.handleSearchSubmit = this.handleSearchSubmit.bind();
+
+        // this.handleSalarySubmit = this.handleSalarySubmit.bind(this);
+        // this.handleNameSubmit = this.handleNameSubmit.bind(this);
+        // this.handleSizeSubmit = this.handleSizeSubmit.bind(this);
+        // this.handleDateSubmit = this.handleDateSubmit.bind(this);
+
         this.showTypes = this.showTypes.bind(this);
         this.closeTypes = this.closeTypes.bind(this);
 
@@ -72,6 +83,37 @@ class Main extends Component{
 
     Search = () => {
         return <div>Hello world!</div>
+    }
+
+    handleSearchSubmit = () => {
+        // let keywordsearch = (this.state.input["keywordsearch"]);
+        // console.log(this.state.input["keywordsearch"]);
+        // console.log(keywordsearch);
+        console.log("searchhh");
+
+        fetch(`http://localhost:3000/job/search?keyword=test&filter=companyName`, {
+            method: 'GET'
+            }).then(data => data.json())
+            // console.log( response);
+
+        // if (keywordsearch !== '') {
+
+        //     // getJob()
+        //     // .then(response => {
+        //     //     this.setState({
+        //     //         data: response.data[0],
+        //     //     });
+        //     // });
+
+        //     // JobSearch(keywordsearch)
+        //     //     .then(response => {
+        //     //     console.log(response);
+        //     // });
+        // }
+        
+        // this.props.history.push("./main");
+
+        alert("submitting");
     }
 
 
@@ -182,10 +224,10 @@ class Main extends Component{
             <div className="Main">
                 <div className="Header">
                     
-                    <form action="/" method="get">
-                        <input name="Search" class="search-input" placeholder="Search" type="text" name="search" value={this.state.input.search} onChange={this.handleChange}/>  
-                        <input name="Location" class="search-input" placeholder="Location" type="text" name="search" value={this.state.input.search} onChange={this.handleChange}/>  
-                        <input type="submit" value="Find" className="search-submitB" onClick={this.handleSubmit}/>  
+                    <form>
+                        <input name="keywordsearch" className="search-input" placeholder="Search" type="text" value={this.state.input.keywordsearch} onChange={this.handleKeywordChange}/>
+                        <input name="locationsearch" className="search-input" placeholder="Location" type="text" value={this.state.input.locationsearch} onChange={this.handleLocationChange}/>
+                        <input type="submit" value="Find" className="search-submitB" onClick={this.handleSearchSubmit}/>  
                         &nbsp;Employer?&nbsp;
                         <Link to ="../" class="loginsignupgroup">Log In</Link>
                         &nbsp;or&nbsp; 
@@ -258,13 +300,17 @@ class Main extends Component{
                         ? ( <Map></Map> )
                         : ( null )
                     }
+
                     <div className="ProfileName0">
                     <p>Job: </p>
                     <p>Company : {this.state.data.title}</p>
                     <p>Descrption : {this.state.data.description}</p>
                     <p>Location : {this.state.data.location}</p>
                     <p>Remote or Not : {this.state.data.remote}</p>
-                    </div> 
+                    </div>
+                
+                    {/* <JobSearch 
+                    ></JobSearch> */}
  
             </div>
 
