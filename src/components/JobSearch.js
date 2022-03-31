@@ -1,66 +1,24 @@
 import React, {useState} from 'react';
 // import "../styles/JobSearch.css";
 
-export default function JobSearch(keywordsearch){
-
-    // const [filteredResults, setFilteredResults] = useState([]);
-
-    // const [searchInput, setSearchInput] = useState('');
+export default function JobSearch(keywordsearch, filter){
 
 
-    // const response = fetch(`http://localhost:3000/job/search?keyword=${keywordsearch}&filter=''`, {
-    const response = fetch(`http://localhost:3000/job/search?keyword=test&filter=''`, {
+    console.log("inside jobsearch, before fetch, for " + filter);
+
+    
+    const response = fetch('http://localhost:3000/job/search?keyword=' + keywordsearch + '&filter=' + filter, {
         method: 'GET',
-        // keyword: keywordsearch,
-        // filter: ""
-
+        headers: {'Content-Type': 'application/json'},
         }).then(data => data.json())
     
     // setFilteredResults(response)
 
-    console.log("inside jobsearch");
     console.log(response);
+    console.log("inside jobsearch, after fetch, for " + filter);
     return response;
-    
-    // const response = fetch(`/job/search`, {
-    //     method: 'GET',
-    //     headers: {'Content-Type': 'application/json'},
-    //     keyword: keywordsearch,
-    //     filter: ""
-    //     // body: JSON.stringify(data)
-    //   })
-
-    // console.log(response);
-    // return response.json();
 
     
-    
-    // const handleKeywordChange = () => {
-    // const handleSearchSubmit = () => {
-    //     setSearchInput(this.state.input["keywordsearch"])
-    //     console.log(this.state.input["keywordsearch"]);
-
-    //     if (searchInput !== '') {
-
-    //         const response = fetch(`/job/search`, {
-    //                 method: 'GET',
-    //                 headers: {'Content-Type': 'application/json'},
-    //                 keyword: searchInput,
-    //                 filter: ""
-    //                 // body: JSON.stringify(data)
-    //             })
-            
-    //         response.json();
-
-    //         console.log(response);
-
-    //         setFilteredResults(response)
-    //     }
-
-    //     alert("submitting");
-    //     this.props.history.push("./main");
-    // }
-
 
     // return(
     //     <div>

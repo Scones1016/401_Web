@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Map from './Map.js';
 import getJob from '../components/GetJob.js';
-// import JobSearch from '../components/JobSearch';
+import JobSearch from '../components/JobSearch';
 
 const JobLists = [
     {
@@ -55,18 +55,30 @@ class Main extends Component{
             showRemotesBool: false,
 
             showMapBool: false,
-            input : {},
+            input : {
+                keywordsearch: "",
+                locationsearch: "",
+
+                salarysearch: "",
+                companysearch: "",
+                sizesearch: "",
+                datesearch: "",
+            },
             data : {}
         }
         // this.handleKeywordChange = this.handleKeywordChange.bind(this);
         // this.handleLocationChange = this.handleLocationChange.bind(this);
+        this.onChange = this.onChange.bind(this);
 
         this.handleSearchSubmit = this.handleSearchSubmit.bind();
 
-        // this.handleSalarySubmit = this.handleSalarySubmit.bind(this);
-        // this.handleNameSubmit = this.handleNameSubmit.bind(this);
-        // this.handleSizeSubmit = this.handleSizeSubmit.bind(this);
-        // this.handleDateSubmit = this.handleDateSubmit.bind(this);
+        this.handleTypeSubmit = this.handleTypeSubmit.bind(this);
+        this.handleRemoteSubmit = this.handleRemoteSubmit.bind(this);
+
+        this.handleSalarySubmit = this.handleSalarySubmit.bind(this);
+        this.handleNameSubmit = this.handleNameSubmit.bind(this);
+        this.handleSizeSubmit = this.handleSizeSubmit.bind(this);
+        this.handleDateSubmit = this.handleDateSubmit.bind(this);
 
         this.showTypes = this.showTypes.bind(this);
         this.closeTypes = this.closeTypes.bind(this);
@@ -81,48 +93,136 @@ class Main extends Component{
     jquerycode = () =>{
     }
 
-    Search = () => {
-        return <div>Hello world!</div>
+
+    onChange(e){
+        this.state.input[e.target.name] = e.target.value;
+        console.log("changing input");
+        console.log(this.state.input);
     }
 
     handleSearchSubmit = () => {
-        // let keywordsearch = (this.state.input["keywordsearch"]);
-        // console.log(this.state.input["keywordsearch"]);
-        // console.log(keywordsearch);
-        console.log("searchhh");
+        let keywordsearch = (this.state.input["keywordsearch"]);
+        let locationsearch = (this.state.input["locationsearch"]);
 
-        fetch(`http://localhost:3000/job/search?keyword=test&filter=companyName`, {
-            method: 'GET'
-            }).then(data => data.json())
-            // console.log( response);
+        console.log("search for:");
+        console.log("keyword: " + keywordsearch);
+        console.log("location: " + locationsearch);
 
-        // if (keywordsearch !== '') {
+        if(keywordsearch !== '') {
 
-        //     // getJob()
-        //     // .then(response => {
-        //     //     this.setState({
-        //     //         data: response.data[0],
-        //     //     });
-        //     // });
+            // getJob()
+            // .then(response => {
+            //     this.setState({
+            //         data: response.data[0],
+            //     });
+            // });
 
-        //     // JobSearch(keywordsearch)
-        //     //     .then(response => {
-        //     //     console.log(response);
-        //     // });
-        // }
+            JobSearch(keywordsearch, '')
+                .then(response => {
+                console.log("back in handle submit for keyword")
+                console.log(response);
+            });
+        }
+        else if(locationsearch !== '') {
+            JobSearch(locationsearch, 'location')
+                .then(response => {
+                console.log("back in handle submit for location")
+                console.log(response);
+            });
+        }
         
-        // this.props.history.push("./main");
 
-        alert("submitting");
+        alert("doing search");
+    }
+
+    handleTypeSubmit = () => {
+        let typesearch = (this.state.input["typesearch"]);
+
+        console.log("search for:");
+        console.log("type: " + typesearch);
+
+            JobSearch(typesearch, 'type')
+                .then(response => {
+                console.log(response);
+            });
+        
+    }
+
+    handleRemoteSubmit = () => {
+        let salarysearch = (this.state.input["salarysearch"]);
+
+        console.log("search for:");
+        console.log("salarysearch: " + salarysearch);
+
+            JobSearch(salarysearch, 'salary')
+                .then(response => {
+                console.log(response);
+            });
+        
+    }
+
+    handleSalarySubmit = () => {
+        let salarysearch = (this.state.input["salarysearch"]);
+
+        console.log("search for:");
+        console.log("salarysearch: " + salarysearch);
+
+            JobSearch(salarysearch, 'salary')
+                .then(response => {
+                console.log(response);
+            });
+        
+    }
+
+    handleNameSubmit = () => {
+        let namesearch = (this.state.input["namesearch"]);
+
+        console.log("search for:");
+        console.log("namesearch: " + namesearch);
+
+            JobSearch(namesearch, 'name')
+                .then(response => {
+                console.log(response);
+            });
+        
+    }
+
+    handleSizeSubmit = () => {
+        let sizesearch = (this.state.input["sizesearch"]);
+
+        console.log("search for:");
+        console.log("sizesearch: " + sizesearch);
+
+            JobSearch(sizesearch, 'size')
+                .then(response => {
+                console.log(response);
+            });
+        
+    }
+
+    handleDateSubmit = () => {
+        let datesearch = (this.state.input["datesearch"]);
+
+        console.log("search for:");
+        console.log("datesearch: " + datesearch);
+
+            JobSearch(datesearch, 'date')
+                .then(response => {
+                console.log(response);
+            });
+        
     }
 
 
     showTypes(event) {
         event.preventDefault();
+
+        this.setState({ showTypesBool: !this.state.showTypesBool });
+
         
-        this.setState({ showTypesBool: true }, () => {
-            document.addEventListener('click', this.closeTypes);
-        });
+        // this.setState({ showTypesBool: true }, () => {
+        //     document.addEventListener('click', this.closeTypes);
+        // });
     }
     closeTypes(event) {
         // if (!this.typesdropdown.contains(event.target)) {
@@ -142,7 +242,7 @@ class Main extends Component{
             this.typesdropdown = element;
             }}
         >
-            <button> Full Time </button>
+            <button onClick={this.handleTypeSubmit}> Full Time </button>
             <button> Part Time </button>
             <button> Internship </button>
         </div>
@@ -151,9 +251,12 @@ class Main extends Component{
     showRemotes(event) {
         event.preventDefault();
         
-        this.setState({ showRemotesBool: true }, () => {
-            document.addEventListener('click', this.closeRemotes);
-        });
+        this.setState({ showRemotesBool: !this.state.showRemotesBool });
+
+
+        // this.setState({ showRemotesBool: true }, () => {
+        //     document.addEventListener('click', this.closeRemotes);
+        // });
     }
     closeRemotes(event) {
         // if (!this.typesdropdown.contains(event.target)) {
@@ -180,40 +283,73 @@ class Main extends Component{
 
     SalariesResults = () => (
         <div>
-            <form action="/" method="get">
-                <input name="Search" placeholder="Salary" type="text" name="salarysearch" value={this.state.input.search} onChange={this.handleChange}/>  
-            </form>
+            <span>
+                <input name="salarysearch" placeholder="Salary" type="text" value={this.state.input.search} 
+                    onChange={this.onChange} 
+                    // onBlur={this.handleSalarySubmit} 
+                    onKeyPress={e => {
+                        if (e.key === 'Enter') {
+                        this.handleSalarySubmit()
+                        }
+                    }}/>  
+            </span>
         </div>
     )
 
     NamesResults = () => (
         <div>
-            <form action="/" method="get">
-                <input name="Search" placeholder="Company Name" type="text" name="companysearch" value={this.state.input.search} onChange={this.handleChange}/>  
-            </form>
+            <span>
+                <input name="companysearch" placeholder="Company Name" type="text" value={this.state.input.search} 
+                    onChange={this.onChange} 
+                    // onBlur={} 
+                    onKeyPress={e => {
+                        if (e.key === 'Enter') {
+                        this.handleNameSubmit()
+                        }
+                    }}/>  
+            </span>
         </div>
     )
 
     SizesResults = () => (
         <div>
-            <form action="/" method="get">
-                <input name="Search" placeholder="Company Size" type="text" name="sizesearch" value={this.state.input.search} onChange={this.handleChange}/>  
-            </form>
+            <span>
+                <input name="sizesearch" placeholder="Company Size" type="text" value={this.state.input.search} 
+                    onChange={this.onChange} 
+                    // onBlur={} 
+                    onKeyPress={e => {
+                        if (e.key === 'Enter') {
+                        this.handleSizeSubmit()
+                        }
+                    }}/>  
+            </span>
         </div>
     )
 
     DatesResults = () => (
         <div>
-            <form action="/" method="get">
-                <input name="Search" placeholder="Posted after MM/DD/YYYY" type="text" name="datesearch" value={this.state.input.search} onChange={this.handleChange}/>  
-            </form>
+            <span>
+                <input name="datesearch" placeholder="Posted after MM/DD/YYYY" type="text" value={this.state.input.search} 
+                    onChange={this.onChange} 
+                    // onBlur={} 
+                    onKeyPress={e => {
+                        if (e.key === 'Enter') {
+                        this.handleDateSubmit()
+                        }
+                    }}/>  
+            </span>
         </div>
     )
 
     showMap(event) {
         event.preventDefault();
 
-        this.setState({ showMapBool: !this.showMapBool });
+        // console.log(this.state);
+        // console.log("a, showMapBool: " + this.state.showMapBool);
+
+        this.setState({ showMapBool: !this.state.showMapBool });
+        
+        // console.log("b, showMapBool: " + this.state.showMapBool);
     }
 
 
@@ -224,15 +360,27 @@ class Main extends Component{
             <div className="Main">
                 <div className="Header">
                     
-                    <form>
-                        <input name="keywordsearch" className="search-input" placeholder="Search" type="text" value={this.state.input.keywordsearch} onChange={this.handleKeywordChange}/>
-                        <input name="locationsearch" className="search-input" placeholder="Location" type="text" value={this.state.input.locationsearch} onChange={this.handleLocationChange}/>
-                        <input type="submit" value="Find" className="search-submitB" onClick={this.handleSearchSubmit}/>  
+                    <span>
+                        <input name="keywordsearch" className="search-input" placeholder="Search" type="text" value={this.state.input.search} 
+                            onChange={this.onChange}
+                            onKeyPress={e => {
+                                if (e.key === 'Enter') {
+                                this.handleSearchSubmit()
+                                }
+                            }}/>
+                        <input name="locationsearch" className="search-input" placeholder="Location" type="text" value={this.state.input.search} 
+                            onChange={this.onChange}
+                            onKeyPress={e => {
+                                if (e.key === 'Enter') {
+                                this.handleSearchSubmit()
+                                }
+                            }}/>
+                        <input type="submit" value="Find" className="search-submitB" onClick={(e) => this.handleSearchSubmit()}/>  
                         &nbsp;Employer?&nbsp;
                         <Link to ="../" class="loginsignupgroup">Log In</Link>
                         &nbsp;or&nbsp; 
                         <Link to="../signup" class="loginsignupgroup">Sign Up</Link>
-                    </form>
+                    </span>
                 </div>
                 
                 <div className="Filters">
@@ -304,7 +452,7 @@ class Main extends Component{
                     <div className="ProfileName0">
                     <p>Job: </p>
                     <p>Company : {this.state.data.title}</p>
-                    <p>Descrption : {this.state.data.description}</p>
+                    <p>Description : {this.state.data.description}</p>
                     <p>Location : {this.state.data.location}</p>
                     <p>Remote or Not : {this.state.data.remote}</p>
                     </div>
