@@ -12,31 +12,10 @@ export default async function JobSearch(keyword, filter){
         // headers: {'Content-Type': 'application/json'},
         }).then(data => data.json())
     
-    // setFilteredResults(response)
 
+    
     console.log(response);
     console.log("inside jobsearch, after fetch, for " + filter);
     return response;
-
     
-
-    // return(
-    //     <div>
-    //     {
-    //         <div className="job">
-                
-    //             {
-    //             (filteredResults)
-    //             /* <p>{JobName}</p>
-    //             <p>{CompanyName}</p>
-    //             <p>{CompanyLocation}</p>
-    //             <p>{Salary}</p>
-    //             <p>{CompanySize}</p>
-    //             <p>{DatePosted}</p>
-                
-    //             <button className="button">Apply</button> */}
-    //         </div>
-    //     }
-    //     </div>
-    // );
 }
