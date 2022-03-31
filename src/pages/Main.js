@@ -5,6 +5,18 @@ import {Link} from 'react-router-dom';
 import Map from './Map.js';
 import getJob from '../components/GetJob.js';
 import JobSearch from '../components/JobSearch';
+import Select from 'react-select';
+
+const availableTypes = [
+    { label: 'Full Time', name: "typesearch", value: 'full-time' },
+    // { label: 'Part Time', value: 'this.state.input.search' },
+    { label: 'Internship', name: "typesearch", value: 'internship' },
+];
+
+const availableRemotes = [
+    { label: 'In Person', name: "remotesearch", value: 'in-person' },
+    { label: 'Remote', name: "remotesearch", value: 'remote' },
+];
 
 const JobLists = [
     {
@@ -59,6 +71,9 @@ class Main extends Component{
                 keywordsearch: "",
                 locationsearch: "",
 
+                typesearch: "",
+                remotesearch: "",
+
                 salarysearch: "",
                 companysearch: "",
                 sizesearch: "",
@@ -69,6 +84,8 @@ class Main extends Component{
         // this.handleKeywordChange = this.handleKeywordChange.bind(this);
         // this.handleLocationChange = this.handleLocationChange.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.onTypesChange = this.onTypesChange.bind(this);
+        this.onRemotesChange = this.onRemotesChange.bind(this);
 
         this.handleSearchSubmit = this.handleSearchSubmit.bind();
 
@@ -121,6 +138,10 @@ class Main extends Component{
                 .then(response => {
                 console.log("back in handle submit for keyword")
                 console.log(response);
+                
+                this.setState({
+                    data: response.data[0],
+                });
             });
         }
         else if(locationsearch !== '') {
@@ -128,6 +149,10 @@ class Main extends Component{
                 .then(response => {
                 console.log("back in handle submit for location")
                 console.log(response);
+
+                this.setState({
+                    data: response.data[0],
+                });
             });
         }
         
@@ -144,6 +169,10 @@ class Main extends Component{
             JobSearch(typesearch, 'type')
                 .then(response => {
                 console.log(response);
+
+                this.setState({
+                    data: response.data[0],
+                });
             });
         
     }
@@ -157,6 +186,10 @@ class Main extends Component{
             JobSearch(salarysearch, 'salary')
                 .then(response => {
                 console.log(response);
+
+                this.setState({
+                    data: response.data[0],
+                });
             });
         
     }
@@ -170,6 +203,10 @@ class Main extends Component{
             JobSearch(salarysearch, 'salary')
                 .then(response => {
                 console.log(response);
+
+                this.setState({
+                    data: response.data[0],
+                });
             });
         
     }
@@ -183,6 +220,10 @@ class Main extends Component{
             JobSearch(namesearch, 'name')
                 .then(response => {
                 console.log(response);
+
+                this.setState({
+                    data: response.data[0],
+                });
             });
         
     }
@@ -196,6 +237,10 @@ class Main extends Component{
             JobSearch(sizesearch, 'size')
                 .then(response => {
                 console.log(response);
+
+                this.setState({
+                    data: response.data[0],
+                });
             });
         
     }
@@ -209,6 +254,10 @@ class Main extends Component{
             JobSearch(datesearch, 'date')
                 .then(response => {
                 console.log(response);
+
+                this.setState({
+                    data: response.data[0],
+                });
             });
         
     }
@@ -235,18 +284,63 @@ class Main extends Component{
         // });
     }
 
-    TypesResults = () => (
+    Types = () => (
         <div
             className="Types"
-            ref={(element) => {
-            this.typesdropdown = element;
-            }}
+            // ref={(element) => {
+            // this.typesdropdown = element;
+            // }}
         >
-            <button onClick={this.handleTypeSubmit}> Full Time </button>
+
+
+
+
+            <Select
+                placeholder="Choose type"
+                options={availableTypes}
+                isMulti
+                // onChange={e => console.log(e.label, e.value)}
+                // onChange={e => console.log(e)}
+                onChange={this.onTypesChange} 
+            />
+            {/* <button name="typesearch" value={this.state.input.search} onClick={this.handleTypeSubmit}> Full Time </button>
             <button> Part Time </button>
-            <button> Internship </button>
+            <button> Internship </button> */}
         </div>
     )
+
+    onTypesChange(e){
+
+        if(e.length == 0)
+        {
+            this.state.input.typesearch = "";
+        }
+        else
+        {
+            console.log(e[0]);
+            // console.log(e[0].name);
+            // console.log(e[0].value);
+
+            this.state.input[e[0].name] = e[0].value;
+        }
+        
+        console.log("changing type input");
+        console.log(this.state.input);
+
+        let typesearch = (this.state.input["typesearch"]);
+
+        console.log("search for:");
+        console.log("typesearch: " + typesearch);
+
+            JobSearch(typesearch, 'type')
+                .then(response => {
+                console.log(response);
+
+                this.setState({
+                    data: response.data[0],
+                });
+            });
+    }
 
     showRemotes(event) {
         event.preventDefault();
@@ -269,17 +363,61 @@ class Main extends Component{
         // });
     }
 
-    RemotesResults = () => (
+    Remotes = () => (
         <div
             className="Remotes"
-            ref={(element) => {
-            this.remotesdropdown = element;
-            }}
+            // ref={(element) => {
+            // this.remotesdropdown = element;
+            // }}
         >
-            <button> In Person </button>
-            <button> Remote </button>
+
+
+            <Select
+                placeholder="Remote?"
+                options={availableRemotes}
+                isMulti
+                // onChange={e => console.log(e.label, e.value)}
+                // onChange={e => console.log(e)}
+                onChange={this.onRemotesChange} 
+            />
+
+            {/* <button> In Person </button>
+            <button> Remote </button> */}
         </div>
     )
+
+    onRemotesChange(e){
+
+        if(e.length == 0)
+        {
+            this.state.input.remotesearch = "";
+        }
+        else
+        {
+            console.log(e[0]);
+            // console.log(e[0].name);
+            // console.log(e[0].value);
+
+            this.state.input[e[0].name] = e[0].value;
+        }
+        
+        console.log("changing remote input");
+        console.log(this.state.input);
+
+        let remotesearch = (this.state.input["remotesearch"]);
+
+        console.log("search for:");
+        console.log("remotesearch: " + remotesearch);
+
+            JobSearch(remotesearch, 'type')
+                .then(response => {
+                console.log(response);
+
+                this.setState({
+                    data: response.data[0],
+                });
+            });
+    }
 
     SalariesResults = () => (
         <div>
@@ -386,25 +524,30 @@ class Main extends Component{
                 <div className="Filters">
 
                     <div className="filter">
-                        <button className="filter-button" onClick={this.showTypes}>
+                        {/* <button className="filter-button" onClick={this.showTypes}>
                         Types
                         </button>
                         {
                             this.state.showTypesBool
-                                ? ( <this.TypesResults /> )
+                                ? ( <this.Types /> )
                                 : ( null )
-                        }
+                        } */}
+
+                        <this.Types />
                     </div>
 
                     <div className="filter">
-                        <button className="filter-button" onClick={this.showRemotes}>
+                        {/* <button className="filter-button" onClick={this.showRemotes}>
                         Remote
                         </button>
                         {
                             this.state.showRemotesBool
-                                ? ( <this.RemotesResults /> )
+                                ? ( <this.Remotes /> )
                                 : ( null )
-                        }
+                        } */}
+
+                        <this.Remotes />
+
                     </div>
 
                     <div className="filter">
@@ -456,9 +599,7 @@ class Main extends Component{
                     <p>Location : {this.state.data.location}</p>
                     <p>Remote or Not : {this.state.data.remote}</p>
                     </div>
-                
-                    {/* <JobSearch 
-                    ></JobSearch> */}
+
  
             </div>
 

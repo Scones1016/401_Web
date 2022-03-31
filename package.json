@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "@types/react-select": "^5.0.1",
     "gmap3": "^7.2.0",
     "jquery": "^3.6.0",
     "react": "^17.0.2",
