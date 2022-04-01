@@ -592,13 +592,36 @@ class Main extends Component{
                         : ( null )
                     }
 
-                    <div className="ProfileName0">
-                    <p>Job: </p>
-                    <p>Company : {this.state.data.title}</p>
-                    <p>Description : {this.state.data.description}</p>
-                    <p>Location : {this.state.data.location}</p>
-                    <p>Remote or Not : {this.state.data.remote}</p>
+
+                {/* applyLink: "www.baidu.com"
+                companyName: "google"
+                companySize: 30000
+                date: 20220101
+                description: "temp job"
+                email: "jieyunli@usc.edu"
+                location: "CA-US"
+                remote: "remote"
+                salaryRangeEnd: 50000
+                salaryRangeStart: 1000
+                title: "job"
+                type: "internship" */}
+
+                <div className="JobResults">
+
+                    <div className="ProfileName0 joblisting">
+                    <p>Job: {this.state.data.title}</p>
+                    <p>Company: {this.state.data.companyName}</p>
+                    <p>Location: {this.state.data.location}</p>
+                    <p>Salary: {this.state.data.salaryRangeStart} to {this.state.data.salaryRangeEnd}</p>
+                    <p>Company Size: {this.state.data.companySize}</p>
+                    <p>Description: {this.state.data.description}</p>
+                    <p>Remote or Not: {this.state.data.remote}</p>
+                    <p>Date Posted: {this.state.data.date}</p>
+                    <a href={this.state.data.applyLink} rel="noreferrer noopener">Apply Link</a>
                     </div>
+                
+
+                </div>
 
  
             </div>
