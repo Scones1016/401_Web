@@ -3,8 +3,8 @@ import '../App.css';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Map from './Map.js';
-import getJob from '../components/GetJob.js';
 import JobSearch from '../components/JobSearch';
+import JobResult from "../components/JobResult.js";
 import Select from 'react-select';
 
 const availableTypes = [
@@ -18,45 +18,18 @@ const availableRemotes = [
     { label: 'Remote', name: "remotesearch", value: 'remote' },
 ];
 
-const JobLists = [
-    {
-        JobName: "First job",
-        Job_Description : "the description of the first job",
-        Posted_Date: "2021, 5, 3",
-        Salary: "100M",
-        id: 1
-    },
-    {
-        JobName: "Second Job",
-        Job_Description : "the description of the second job",
-        Posted_Date: "2021, 4, 3",
-        Salary : "200M",
-        id: 2
-    },
-    {
-        JobName: "Second Job",
-        Job_Description : "the description of the second job",
-        Posted_Date: "2021, 4, 3",
-        Salary : "200M",
-        id: 3
-    },
-    {
-        JobName: "Second Job",
-        Job_Description : "the description of the second job",
-        Posted_Date: "2021, 4, 3",
-        Salary : "200M",
-        id : 4
-    }
-]
-
 class Main extends Component{
 
     componentDidMount(){
         document.title = 'Job Searching'; 
-        getJob()
-        .then(response => {
+
+        JobSearch(' ', '')
+            .then(response => {
+            console.log("starting off with an empty search")
+            // console.log(response);
+            
             this.setState({
-                data: response.data[0],
+                data: response.data,
             });
         });
     }
@@ -79,10 +52,8 @@ class Main extends Component{
                 sizesearch: "",
                 datesearch: "",
             },
-            data : {}
+            data : []
         }
-        // this.handleKeywordChange = this.handleKeywordChange.bind(this);
-        // this.handleLocationChange = this.handleLocationChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onTypesChange = this.onTypesChange.bind(this);
         this.onRemotesChange = this.onRemotesChange.bind(this);
@@ -104,10 +75,6 @@ class Main extends Component{
         this.closeRemotes = this.closeRemotes.bind(this);
 
         this.showMap = this.showMap.bind(this);
-        this.jquerycode = this.jquerycode.bind(this);
-    }
-
-    jquerycode = () =>{
     }
 
 
@@ -130,7 +97,7 @@ class Main extends Component{
             // getJob()
             // .then(response => {
             //     this.setState({
-            //         data: response.data[0],
+            //         data: response.data,
             //     });
             // });
 
@@ -140,7 +107,7 @@ class Main extends Component{
                 console.log(response);
                 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
         }
@@ -151,13 +118,13 @@ class Main extends Component{
                 console.log(response);
 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
         }
         
 
-        alert("doing search");
+        // alert("doing search");
     }
 
     handleTypeSubmit = () => {
@@ -171,7 +138,7 @@ class Main extends Component{
                 console.log(response);
 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
         
@@ -188,7 +155,7 @@ class Main extends Component{
                 console.log(response);
 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
         
@@ -205,7 +172,7 @@ class Main extends Component{
                 console.log(response);
 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
         
@@ -222,7 +189,7 @@ class Main extends Component{
                 console.log(response);
 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
         
@@ -239,7 +206,7 @@ class Main extends Component{
                 console.log(response);
 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
         
@@ -256,7 +223,7 @@ class Main extends Component{
                 console.log(response);
 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
         
@@ -291,7 +258,6 @@ class Main extends Component{
             // this.typesdropdown = element;
             // }}
         >
-
 
 
 
@@ -337,7 +303,7 @@ class Main extends Component{
                 console.log(response);
 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
     }
@@ -414,7 +380,7 @@ class Main extends Component{
                 console.log(response);
 
                 this.setState({
-                    data: response.data[0],
+                    data: response.data,
                 });
             });
     }
@@ -489,6 +455,24 @@ class Main extends Component{
         
         // console.log("b, showMapBool: " + this.state.showMapBool);
     }
+
+    
+    JobsResults = () => (
+
+            this.state.data != null
+                ? (
+                    this.state.data.map(jobdata=>(
+                        <JobResult 
+                            title={jobdata.title} companyName={jobdata.companyName} location={jobdata.location}
+                            salaryRangeStart = {jobdata.salaryRangeStart} salaryRangeEnd = {jobdata.salaryRangeEnd}
+                            companySize = {jobdata.companySize} description={jobdata.description} remote={jobdata.remote}
+                            date={jobdata.date} applyLink={jobdata.applyLink}
+                        ></JobResult>
+                        ))
+                )
+                : ( null )
+
+    )
 
 
 
@@ -593,33 +577,14 @@ class Main extends Component{
                     }
 
 
-                {/* applyLink: "www.baidu.com"
-                companyName: "google"
-                companySize: 30000
-                date: 20220101
-                description: "temp job"
-                email: "jieyunli@usc.edu"
-                location: "CA-US"
-                remote: "remote"
-                salaryRangeEnd: 50000
-                salaryRangeStart: 1000
-                title: "job"
-                type: "internship" */}
+                
 
                 <div className="JobResults">
 
-                    <div className="ProfileName0 joblisting">
-                    <p>Job: {this.state.data.title}</p>
-                    <p>Company: {this.state.data.companyName}</p>
-                    <p>Location: {this.state.data.location}</p>
-                    <p>Salary: {this.state.data.salaryRangeStart} to {this.state.data.salaryRangeEnd}</p>
-                    <p>Company Size: {this.state.data.companySize}</p>
-                    <p>Description: {this.state.data.description}</p>
-                    <p>Remote or Not: {this.state.data.remote}</p>
-                    <p>Date Posted: {this.state.data.date}</p>
-                    <a href={this.state.data.applyLink} rel="noreferrer noopener">Apply Link</a>
-                    </div>
-                
+                    {
+                        <this.JobsResults />
+                    }
+
 
                 </div>
 
