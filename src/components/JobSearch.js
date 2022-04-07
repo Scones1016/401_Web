@@ -1,15 +1,18 @@
 import React, {useState} from 'react';
 // import "../styles/JobSearch.css";
 
-export default async function JobSearch(keyword, filter){
+export default async function JobSearch(params, filter){
 
 
     console.log("inside jobsearch, before fetch, for " + filter);
+    console.log(params);
+
 
     
-    const response = await fetch('http://localhost:3000/job/search?keyword=' + keyword + '&filter=' + filter, {
-        method: 'GET',
-        // headers: {'Content-Type': 'application/json'},
+    const response = await fetch('http://localhost:3000/job/search', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({"params": params}),
         }).then(data => data.json())
     
 

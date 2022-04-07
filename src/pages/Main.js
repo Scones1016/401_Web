@@ -23,7 +23,10 @@ class Main extends Component{
     componentDidMount(){
         document.title = 'Job Searching'; 
 
-        JobSearch(' ', '')
+        let params = [];
+        params.push({"keyword": "", "filter": ""});
+        
+        JobSearch(params, '')
             .then(response => {
             console.log("starting off with an empty search")
             // console.log(response);
@@ -60,14 +63,6 @@ class Main extends Component{
 
         this.handleSearchSubmit = this.handleSearchSubmit.bind();
 
-        this.handleTypeSubmit = this.handleTypeSubmit.bind(this);
-        this.handleRemoteSubmit = this.handleRemoteSubmit.bind(this);
-
-        this.handleSalarySubmit = this.handleSalarySubmit.bind(this);
-        this.handleNameSubmit = this.handleNameSubmit.bind(this);
-        this.handleSizeSubmit = this.handleSizeSubmit.bind(this);
-        this.handleDateSubmit = this.handleDateSubmit.bind(this);
-
         this.showTypes = this.showTypes.bind(this);
         this.closeTypes = this.closeTypes.bind(this);
 
@@ -85,23 +80,50 @@ class Main extends Component{
     }
 
     handleSearchSubmit = () => {
+
+        let params = [];
+
         let keywordsearch = (this.state.input["keywordsearch"]);
         let locationsearch = (this.state.input["locationsearch"]);
+        let typesearch = (this.state.input["typesearch"]);
+        let remotesearch = (this.state.input["remotesearch"]);
+        let salarysearch = (this.state.input["salarysearch"]);
+        let namesearch = (this.state.input["companysearch"]);
+        let sizesearch = (this.state.input["sizesearch"]);
+        let datesearch = (this.state.input["datesearch"]);
 
-        console.log("search for:");
-        console.log("keyword: " + keywordsearch);
-        console.log("location: " + locationsearch);
+        
+        if(keywordsearch != '') {
+            params.push({"keyword": keywordsearch, "filter": ""});
+        }
+        if(locationsearch != '') {
+            params.push({"keyword": locationsearch, "filter": "location"});
+        }
+        if(typesearch != '') {
+            params.push({"keyword": typesearch, "filter": "type"});
+        }
+        if(remotesearch != '') {
+            params.push({"keyword": remotesearch, "filter": "remote"});
+        }
+        if(salarysearch != '') {
+            params.push({"keyword": salarysearch, "filter": "salary"});
+        }
+        if(namesearch != '') {
+            params.push({"keyword": namesearch, "filter": "companyName"});
+        }
+        if(sizesearch != '') {
+            params.push({"keyword": sizesearch, "filter": "companySize"});
+        }
+        if(datesearch != '') {
+            params.push({"keyword": datesearch, "filter": "date"});
+        }
 
-        if(keywordsearch !== '') {
 
-            // getJob()
-            // .then(response => {
-            //     this.setState({
-            //         data: response.data,
-            //     });
-            // });
+        if(params.length == 0)
+        {
+            params.push({"keyword": "", "filter": ""});
 
-            JobSearch(keywordsearch, '')
+            JobSearch(params, '')
                 .then(response => {
                 console.log("back in handle submit for keyword")
                 console.log(response);
@@ -111,123 +133,27 @@ class Main extends Component{
                 });
             });
         }
-        else if(locationsearch !== '') {
-            JobSearch(locationsearch, 'location')
+        else
+        {
+            JobSearch(params, '')
                 .then(response => {
-                console.log("back in handle submit for location")
+                console.log("back in handle submit for keyword")
                 console.log(response);
-
+                
                 this.setState({
                     data: response.data,
                 });
             });
         }
+
+
+
+        console.log("search submitted");
+
         
 
-        // alert("doing search");
     }
-
-    handleTypeSubmit = () => {
-        let typesearch = (this.state.input["typesearch"]);
-
-        console.log("search for:");
-        console.log("type: " + typesearch);
-
-            JobSearch(typesearch, 'type')
-                .then(response => {
-                console.log(response);
-
-                this.setState({
-                    data: response.data,
-                });
-            });
-        
-    }
-
-    handleRemoteSubmit = () => {
-        let salarysearch = (this.state.input["salarysearch"]);
-
-        console.log("search for:");
-        console.log("salarysearch: " + salarysearch);
-
-            JobSearch(salarysearch, 'salary')
-                .then(response => {
-                console.log(response);
-
-                this.setState({
-                    data: response.data,
-                });
-            });
-        
-    }
-
-    handleSalarySubmit = () => {
-        let salarysearch = (this.state.input["salarysearch"]);
-
-        console.log("search for:");
-        console.log("salarysearch: " + salarysearch);
-
-            JobSearch(salarysearch, 'salary')
-                .then(response => {
-                console.log(response);
-
-                this.setState({
-                    data: response.data,
-                });
-            });
-        
-    }
-
-    handleNameSubmit = () => {
-        let namesearch = (this.state.input["namesearch"]);
-
-        console.log("search for:");
-        console.log("namesearch: " + namesearch);
-
-            JobSearch(namesearch, 'name')
-                .then(response => {
-                console.log(response);
-
-                this.setState({
-                    data: response.data,
-                });
-            });
-        
-    }
-
-    handleSizeSubmit = () => {
-        let sizesearch = (this.state.input["sizesearch"]);
-
-        console.log("search for:");
-        console.log("sizesearch: " + sizesearch);
-
-            JobSearch(sizesearch, 'size')
-                .then(response => {
-                console.log(response);
-
-                this.setState({
-                    data: response.data,
-                });
-            });
-        
-    }
-
-    handleDateSubmit = () => {
-        let datesearch = (this.state.input["datesearch"]);
-
-        console.log("search for:");
-        console.log("datesearch: " + datesearch);
-
-            JobSearch(datesearch, 'date')
-                .then(response => {
-                console.log(response);
-
-                this.setState({
-                    data: response.data,
-                });
-            });
-        
-    }
+    
 
 
     showTypes(event) {
@@ -293,19 +219,21 @@ class Main extends Component{
         console.log("changing type input");
         console.log(this.state.input);
 
-        let typesearch = (this.state.input["typesearch"]);
+        this.handleSearchSubmit();
 
-        console.log("search for:");
-        console.log("typesearch: " + typesearch);
+        // let typesearch = (this.state.input["typesearch"]);
 
-            JobSearch(typesearch, 'type')
-                .then(response => {
-                console.log(response);
+        // console.log("search for:");
+        // console.log("typesearch: " + typesearch);
 
-                this.setState({
-                    data: response.data,
-                });
-            });
+        //     JobSearch(typesearch, 'type')
+        //         .then(response => {
+        //         console.log(response);
+
+        //         this.setState({
+        //             data: response.data,
+        //         });
+        //     });
     }
 
     showRemotes(event) {
@@ -370,19 +298,21 @@ class Main extends Component{
         console.log("changing remote input");
         console.log(this.state.input);
 
-        let remotesearch = (this.state.input["remotesearch"]);
+        this.handleSearchSubmit();
 
-        console.log("search for:");
-        console.log("remotesearch: " + remotesearch);
+        // let remotesearch = (this.state.input["remotesearch"]);
 
-            JobSearch(remotesearch, 'type')
-                .then(response => {
-                console.log(response);
+        // console.log("search for:");
+        // console.log("remotesearch: " + remotesearch);
 
-                this.setState({
-                    data: response.data,
-                });
-            });
+        //     JobSearch(remotesearch, 'type')
+        //         .then(response => {
+        //         console.log(response);
+
+        //         this.setState({
+        //             data: response.data,
+        //         });
+        //     });
     }
 
     SalariesResults = () => (
@@ -393,7 +323,7 @@ class Main extends Component{
                     // onBlur={this.handleSalarySubmit} 
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
-                        this.handleSalarySubmit()
+                        this.handleSearchSubmit()
                         }
                     }}/>  
             </span>
@@ -408,7 +338,7 @@ class Main extends Component{
                     // onBlur={} 
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
-                        this.handleNameSubmit()
+                        this.handleSearchSubmit()
                         }
                     }}/>  
             </span>
@@ -423,7 +353,7 @@ class Main extends Component{
                     // onBlur={} 
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
-                        this.handleSizeSubmit()
+                        this.handleSearchSubmit()
                         }
                     }}/>  
             </span>
@@ -438,7 +368,7 @@ class Main extends Component{
                     // onBlur={} 
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
-                        this.handleDateSubmit()
+                        this.handleSearchSubmit()
                         }
                     }}/>  
             </span>
@@ -573,7 +503,7 @@ class Main extends Component{
                     {
                     this.state.showMapBool
                         ? ( <Map></Map> )
-                        : ( null )
+                        : ( <Map></Map> )
                     }
 
 
