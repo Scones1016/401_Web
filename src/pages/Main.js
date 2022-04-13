@@ -58,6 +58,7 @@ class Main extends Component{
             data : []
         }
         this.onChange = this.onChange.bind(this);
+        // this.dateMaxLengthCheck = this.dateMaxLengthCheck.bind();
         this.onTypesChange = this.onTypesChange.bind(this);
         this.onRemotesChange = this.onRemotesChange.bind(this);
 
@@ -79,6 +80,15 @@ class Main extends Component{
         console.log(this.state.input);
     }
 
+    // dateMaxLengthCheck = (e) => {
+    //     if (e.target.value.length > 10) {
+    //         e.target.value = e.target.value.slice(0, 10)
+    //     }
+    //     this.state.input[e.target.name] = e.target.value;
+    //     console.log("changing input");
+    //     console.log(this.state.input);
+    // }
+
     handleSearchSubmit = () => {
 
         let params = [];
@@ -97,6 +107,7 @@ class Main extends Component{
             params.push({"keyword": keywordsearch, "filter": ""});
         }
         if(locationsearch != '') {
+            locationsearch = locationsearch.toUpperCase();
             params.push({"keyword": locationsearch, "filter": "location"});
         }
         if(typesearch != '') {
@@ -115,6 +126,12 @@ class Main extends Component{
             params.push({"keyword": sizesearch, "filter": "companySize"});
         }
         if(datesearch != '') {
+            if(datesearch.length > 10)
+            {
+                alert("Date given is too long.");
+            }
+            datesearch = datesearch.substring(0, 4) + datesearch.substring(5, 7) + datesearch.substring(8, 10);
+
             params.push({"keyword": datesearch, "filter": "date"});
         }
 
@@ -318,7 +335,7 @@ class Main extends Component{
     SalariesResults = () => (
         <div>
             <span>
-                <input name="salarysearch" placeholder="Salary" type="text" value={this.state.input.search} 
+                <input name="salarysearch" placeholder="Salary" type="number" value={this.state.input.search} 
                     onChange={this.onChange} 
                     // onBlur={this.handleSalarySubmit} 
                     onKeyPress={e => {
@@ -348,7 +365,7 @@ class Main extends Component{
     SizesResults = () => (
         <div>
             <span>
-                <input name="sizesearch" placeholder="Company Size" type="text" value={this.state.input.search} 
+                <input name="sizesearch" placeholder="Company Size" type="number" value={this.state.input.search} 
                     onChange={this.onChange} 
                     // onBlur={} 
                     onKeyPress={e => {
@@ -363,7 +380,8 @@ class Main extends Component{
     DatesResults = () => (
         <div>
             <span>
-                <input name="datesearch" placeholder="Posted after MM/DD/YYYY" type="text" value={this.state.input.search} 
+                <input name="datesearch" placeholder="Posted after MM/DD/YYYY" type="date" maxLength="10" value={this.state.input.search} 
+                    // onInput={this.dateMaxLengthCheck}
                     onChange={this.onChange} 
                     // onBlur={} 
                     onKeyPress={e => {
