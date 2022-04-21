@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import Map from './Map.js';
 import JobSearch from '../components/JobSearch';
 import JobResult from "../components/JobResult.js";
+import JobResultLarge from "../components/JobResultLarge.js";
 import Select from 'react-select';
 
 const availableTypes = [
@@ -55,7 +56,8 @@ class Main extends Component{
                 sizesearch: "",
                 datesearch: "",
             },
-            data : []
+            data : [],
+            largejob : []
         }
         this.onChange = this.onChange.bind(this);
         // this.dateMaxLengthCheck = this.dateMaxLengthCheck.bind();
@@ -71,6 +73,8 @@ class Main extends Component{
         this.closeRemotes = this.closeRemotes.bind(this);
 
         this.showMap = this.showMap.bind(this);
+
+        this.makeLarge = this.makeLarge.bind(this);
     }
 
 
@@ -404,21 +408,101 @@ class Main extends Component{
         // console.log("b, showMapBool: " + this.state.showMapBool);
     }
 
+
+    makeLarge = (input) => {
+        // if (e.target.value.length > 10) {
+        //     e.target.value = e.target.value.slice(0, 10)
+        // }
+        // this.state.input[e.target.name] = e.target.value;
+        console.log("MAKE LARGE");
+        console.log("print largejob");
+        console.log(this.state.largejob);
+        console.log("iinput:");
+        console.log(input);
+
+        this.setState(
+            { largejob: input },
+            () => { console.log("largejob has been updated: ")
+                    console.log(this.state.largejob) }
+        );
+
+    }
+
     
     JobsResults = () => (
 
-            this.state.data != null
-                ? (
-                    this.state.data.map(jobdata=>(
-                        <JobResult 
-                            title={jobdata.title} companyName={jobdata.companyName} location={jobdata.location}
-                            salaryRangeStart = {jobdata.salaryRangeStart} salaryRangeEnd = {jobdata.salaryRangeEnd}
-                            companySize = {jobdata.companySize} description={jobdata.description} remote={jobdata.remote}
-                            date={jobdata.date} applyLink={jobdata.applyLink}
-                        ></JobResult>
-                        ))
-                )
-                : ( null )
+        this.state.data.length != 0
+            ? (
+                // <div>
+                //     <JobResult 
+                //         title={"TITLE"} companyName={"google"} location={"NY"}
+                //         salaryRangeStart = {"1000"} salaryRangeEnd = {"5000"}
+                //         companySize = {"5"} remote={"remote!"}
+                //         date={"2020/02/20"} applyLink={"LINK"}
+
+                //         makeLarge={this.makeLarge}
+                //     ></JobResult>
+
+                //     <JobResult 
+                //         title={"SECOND"} companyName={"microsoft"} location={"la"}
+                //         salaryRangeStart = {"1000"} salaryRangeEnd = {"5000"}
+                //         companySize = {"5"} remote={"remote!"}
+                //         date={"2020/02/20"} applyLink={"LINK"}
+
+                //         makeLarge={this.makeLarge}
+                //     ></JobResult>
+                // </div>
+
+                this.state.data.map(jobdata=>(
+                    <JobResult 
+                        title={jobdata.title} companyName={jobdata.companyName} location={jobdata.location}
+                        salaryRangeStart = {jobdata.salaryRangeStart} salaryRangeEnd = {jobdata.salaryRangeEnd}
+                        companySize = {jobdata.companySize} description={jobdata.description}
+                        type={jobdata.type} remote={jobdata.remote}
+                        date={jobdata.date} applyLink={jobdata.applyLink}
+                            
+                        makeLarge={this.makeLarge}
+                    ></JobResult>
+                    ))
+            )
+            : (
+                null
+            )
+
+    )
+
+
+    JobsResultsLarge = () => (
+
+        this.state.largejob.length != 0
+            ? (
+
+                    // <JobResultLarge
+                    //     title={"LARGE"} companyName={"google"} location={"NY"}
+                    //     salaryRangeStart = {"1000"} salaryRangeEnd = {"5000"}
+                    //     companySize = {"5"} description={"jobdata.description"} 
+                    //     type={"fulltime"} remote={"remote!"}
+                    //     date={"2020/02/20"} applyLink={"LINK"}
+                    // ></JobResultLarge>
+
+                    <JobResultLarge
+                        data={this.state.largejob}
+                    ></JobResultLarge>
+
+
+
+                    // <JobResultLarge 
+                    //     title={largejob.title} companyName={largejob.companyName} location={largejob.location}
+                    //     salaryRangeStart = {largejob.salaryRangeStart} salaryRangeEnd = {largejob.salaryRangeEnd}
+                    //     companySize = {largejob.companySize} description={largejob.description}
+                    //     type={largejob.type} remote={largejob.remote}
+                    //     date={largejob.date} applyLink={largejob.applyLink}
+                    // ></JobResultLarge>
+                
+            )
+            : (
+                null
+            )
 
     )
 
@@ -512,17 +596,19 @@ class Main extends Component{
 
 
 
-                <br/>
-                <br/>
-                <br/>
                 <button onClick={this.showMap}>
-                Show Map
-                </button>
-                    {
-                    this.state.showMapBool
-                        ? ( <Map></Map> )
-                        : ( <Map></Map> )
-                    }
+                    Show Map
+                    </button>
+                        {
+                        this.state.showMapBool
+                            ? ( <Map></Map> )
+                            : null
+                        }
+                        
+                <br/>
+                <br/>
+                <br/>
+                
 
 
                 
@@ -531,6 +617,15 @@ class Main extends Component{
 
                     {
                         <this.JobsResults />
+                    }
+
+
+                </div>
+
+                <div className="JobResultsLarge">
+
+                    {
+                        <this.JobsResultsLarge />
                     }
 
 
