@@ -1,118 +1,137 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect, useIsMounted, useRef, Component} from 'react';
 import "../styles/AddProfile.css";
+import {useLocation, useHistory, } from "react-router-dom";
 
-class AddProfile extends Component{
-    componentDidMount(){
-    }
 
-    constructor(){
-        super();
-        this.goto = this.goto.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.state= {
-            input : {}
+export default function AddProfile(){
+
+    const state = useLocation().state;
+    const [input, setInput] = useState(state!=undefined? state: {});
+    const [info, setInfo] = useState(JSON.parse(localStorage.getItem("companyInfo")));
+    const history = useHistory();
+    const location = useLocation();
+    const isMounted = useRef(false);
+    useEffect(()=>{
+    }, []);
+
+    function edit(){
+        if(location.state!=undefined)
+        {
+            input.title = location.state.name;
+            input.description = location.state.description;
+            input.salaryRangeStart = location.state.salaryStart;
+            input.salaryRangeEnd = location.state.salaryEnd;
+            input.location = location.state.location;
+            input.applyLink = location.state.applyLink;
+            setInput(input);
         }
     }
 
-    goto=()=>{
-        this.props.history.push('./ProfilePage');
+    function goto(){
+        history.push('./ProfilePage');
     }
 
-    handleChange(event){
-        let input = this.state.input;
-        if(input[event.target.name] != "person" && input[event.target.name] != "temporarily" && input[event.target.name] != "remote" && input[event.target.name] != "internship" && input[event.target.name] != "fulltime")
+    function handleChange(event){
+        if(event.target.name != "in-person" && event.target.name != "remote" && event.target.name != "internship" && event.target.name != "fulltime")
         {
             input[event.target.name] = event.target.value;
         }
         else
         {   
-            /*if(event.target.checked != 'undefined')
+            console.log(event.target.checked);
+            const checked = event.target.checked;
+            if(checked)
             {
-                input[event.target.name] = 'off';
+                if(event.target.name != "in-person" && event.target.name != "remote")
+                {
+                    input["type"] = event.target.name;
+                }
+                else
+                {
+                    console.log(event.target.name);
+                    input["remote"] = event.target.name;
+                }
             }
-            else
-            {
-                input[event.target.name] = 'on';
-            }*/
         }
-        this.setState({
-        input : input
-        });
+        setInput(input);
     }
 
-    handleSubmit =()=>{
-        let input = this.state.input;
-        input["remote"] = "remote";
-        input["type"] = "internship";
-        input["companySize"] = "30000";
-        input["companyName"] = "google";
-        input["date"] = "20220101";
+    function handleSubmit(){
+        input["companySize"] = info.size;
+        input["companyName"] = localStorage.getItem("company");
+        var date = new Date();
+        var year = date.getFullYear().toString();
+        var month = (date.getMonth() + 1).toString();
+        if((date.getMonth() + 1) < 10)
+        {
+            month = '0' + month;
+        }
+        var day = date.getDate().toString();
+        if(date.getDate() < 10)
+        {
+            day = '0' + day;
+        }
+        var date0 = year + month + day;
+        input["date"] = date0;
         input["email"] = localStorage.getItem("email");
         console.log(input);
-        this.setState({
-            input : input
-            });
-        const response = fetch(`http://localhost:3000/job/post`, {
+        setInput(input);
+        const response = fetch(`http://localhost:3000/job/p`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(input)
           })
         console.log(response);
+        history.push('./ProfilePage');
     }
 
-    render(){
-        return(
-            <div>
-                <div className="wrap">
-                    <div className="post">
-                    Create your job Posting
-                    </div>
-                    <div className="info">
-                        Logged in As {localStorage.getItem("company")}
-                    </div>
+    return(
+        <div>
+            <div className="wrap">
+                <div className="post">
+                Create your job Posting
                 </div>
-                <div className="Card">
-                    <div className="Left">
-                        <p>Job Title</p>
-                        <input className="inpu" name="title" value={this.state.input.title} onChange={this.handleChange}/>
-                        <p>Job Description </p>
-                        <input className="inputlarge" name="description" value={this.state.input.description} onChange={this.handleChange}>
-                        </input>
-                        <button className="back" onClick={this.goto}>Back</button>
+                <div className="info">
+                    Logged in As {localStorage.getItem("company")}
+                </div>
+            </div>
+            <div className="Card">
+                <div className="Left">
+                    <p>Job Title</p>
+                    <input className="inpu" name="title" value={input.title} onChange={handleChange}/>
+                    <p>Job Description </p>
+                    <textarea rows="6" cols="60" className="inputlarge" name="description" value={input.description} onChange={handleChange}>
+                    </textarea>
+                    <button className="back" onLoad={edit} onClick={goto}>Back</button>
+                </div>
+                <div className="Secn">  
+                    <div class="wrap2">   
+                        <div class="remote">         
+                        <p>Remote Option</p>
+                        <input type="checkbox" name="in-person" onChange={handleChange}/><label for="in-person">In Person</label><br/>
+                        <input type="checkbox" name="remote" onChange={handleChange}/><label for="remote">Remote</label><br/>
+                        </div>
+                        <div class="type">
+                        <p>Type</p>
+                        <input type="checkbox" name="internship" onChange={handleChange}/><label for="intership">Internship</label><br/>
+                        <input type="checkbox" name="fulltime" onChange={handleChange}/><label for="fulltime">Full Time</label>
+                        </div>
                     </div>
-                    <div className="Secn">  
-                        <div class="wrap2">   
-                            <div class="remote">         
-                            <p>Remote Option</p>
-                            <input type="checkbox" name="person" checked={this.state.input.person} onChange={this.handleChange}/><label for="person">In Person</label><br/>
-                            <input type="checkbox" name="temporarily" checked={this.state.input.temporarily} onChange={this.handleChange}/><label for="temporarily">Temporarily Remote</label><br/>
-                            <input type="checkbox" name="remote" checked={this.state.input.remote} onChange={this.handleChange}/><label for="remote">Remote</label><br/>
-                            </div>
-                            <div class="type">
-                            <p>Type</p>
-                            <input type="checkbox" name="internship" checked={this.state.input.internship} onChange={this.handleChange}/><label for="intership">Internship</label><br/>
-                            <input type="checkbox" name="fulltime" checked={this.state.input.fulltime} onChange={this.handleChange}/><lanbel for="fulltime">Full Time</lanbel>
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="wrap3">
-                            <p>Location:</p>
-                            <input class="inpu" name="location" value={this.state.input.location} onChange={this.handleChange}/>
-                            <p>Salary Range</p>
-                            <span>From </span>
-                            <input className="inputrange" name="salaryRangeStart" value={this.state.input.salaryRangeStart} onChange={this.handleChange}/><br/>
-                            <span>To &nbsp; &nbsp; </span>
-                            <input className="inputrange" name="salaryRangeEnd" value={this.state.input.salaryRangeEnd} onChange={this.handleChange}/>
-                            <p>Link to your own Application Website</p>
-                            <input class="inpu" name="applyLink" value={this.state.input.applyLink} onChange={this.handleChange}/>
-                            <button className="subm" onClick={this.handleSubmit}>Post </button>
-                        </div>
+                    <br/>
+                    <div class="wrap3">
+                        <p>Location:</p>
+                        <input class="inpu" name="location" value={input.location} onChange={handleChange}/>
+                        <p>Salary Range</p>
+                        <span>From </span>
+                        <input className="inputrange" name="salaryRangeStart" value={input.salaryRangeStart} onChange={handleChange}/><br/>
+                        <span>To &nbsp; &nbsp; </span>
+                        <input className="inputrange" name="salaryRangeEnd" value={input.salaryRangeEnd} onChange={handleChange}/>
+                        <p>Link to your own Application Website</p>
+                        <input class="inpu" name="applyLink" value={input.applyLink} onChange={handleChange}/>
+                        <button className="subm" onClick={handleSubmit}>Post </button>
                     </div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
-
-export default AddProfile;

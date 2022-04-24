@@ -1,0 +1,48 @@
+.companyInformation{
+    position: static; 
+    margin-left: 1%;
+    margin-right: 1%;
+    width: 88%;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-top: 1%;
+    height: 100%;
+    float: right;
+    padding: 5%;
+}
+
+.image{
+    height: 80%;
+    width: 10%;
+    float: left;
+}
+
+.job{
+    margin-top: 20px;
+    margin-left: 1%;
+}
+
+.information{
+    float: left;
+    width: 80%;
+}
+
+Link{
+    float: right;
+    width: 10%;
+}
+
+.buttons{
+    margin-top: 20px;
+    margin-left: 1%;
+    height: 30px;
+    background-color: #CBEFED;
+    border: 2px solid white;
+    border-radius: 5px;
+}
+
+.warp{
+    display: inline;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
