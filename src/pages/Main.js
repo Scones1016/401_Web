@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Map from './Map.js';
 import JobSearch from '../components/JobSearch';
+import GetImage from '../components/GetImage';
 import JobResult from "../components/JobResult.js";
 import JobResultLarge from "../components/JobResultLarge.js";
 import Select from 'react-select';
@@ -35,6 +36,7 @@ class Main extends Component{
             this.setState({
                 data: response.data,
             });
+            this.addImages();
         });
     }
     constructor(){
@@ -65,6 +67,7 @@ class Main extends Component{
         this.onRemotesChange = this.onRemotesChange.bind(this);
 
         this.handleSearchSubmit = this.handleSearchSubmit.bind();
+        this.addImages = this.addImages.bind(this);
 
         this.showTypes = this.showTypes.bind(this);
         this.closeTypes = this.closeTypes.bind(this);
@@ -92,6 +95,35 @@ class Main extends Component{
     //     console.log("changing input");
     //     console.log(this.state.input);
     // }
+
+    async addImages() {
+
+        console.log("start addImages");
+
+        // console.log(this.state);
+        var jobs = this.state.data;
+        for(var i = 0; i < jobs.length; i++)
+        {
+            var imageurl = await GetImage(jobs[i].email)
+                .then(
+                    jobs[i]["image"] = imageurl)
+                        .then(
+                            this.setState({
+                                data: jobs
+                            }),
+                            console.log(jobs[i])
+                        );
+            // jobs[i]["image"] = imageurl;
+            // console.log(jobs[i]);
+        }
+
+        // this.setState({
+        //     data: jobs
+        // });
+
+        console.log("end addImages");
+
+    }
 
     handleSearchSubmit = () => {
 
@@ -152,6 +184,7 @@ class Main extends Component{
                 this.setState({
                     data: response.data,
                 });
+                this.addImages();
             });
         }
         else
@@ -164,6 +197,7 @@ class Main extends Component{
                 this.setState({
                     data: response.data,
                 });
+                this.addImages();
             });
         }
 
@@ -458,8 +492,9 @@ class Main extends Component{
                         title={jobdata.title} companyName={jobdata.companyName} location={jobdata.location}
                         salaryRangeStart = {jobdata.salaryRangeStart} salaryRangeEnd = {jobdata.salaryRangeEnd}
                         companySize = {jobdata.companySize} description={jobdata.description}
-                        type={jobdata.type} remote={jobdata.remote}
+                        email={jobdata.email} type={jobdata.type} remote={jobdata.remote}
                         date={jobdata.date} applyLink={jobdata.applyLink}
+                        image={jobdata.image}
                             
                         makeLarge={this.makeLarge}
                     ></JobResult>
