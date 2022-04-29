@@ -1,9 +1,11 @@
 import React from 'react'
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import Geocoder from 'react-native-geocoding';  
+
 
 const containerStyle = {
-  width: '400px',
-  height: '400px'
+  width: '380px',
+  height: '380px',
 };
 
 const center = {
@@ -11,17 +13,23 @@ const center = {
   lng: -118.24
 };
 
-function MyComponent() {
+
+function MyComponent(props) {
+
+  console.log("BEGIN GOOGLE MAPS");
+  console.log(props.locations);
+
+  Geocoder.init("AIzaSyAD2rcXfEubUVEW7MUaEr9T1SXwY2hpL6U");
+
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: "AIzaSyAD2rcXfEubUVEW7MUaEr9T1SXwY2hpL6U"
   })
 
   const [map, setMap] = React.useState(null)
-
+  
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds();
-    map.fitBounds(bounds);
     setMap(map)
   }, [])
 
@@ -29,17 +37,32 @@ function MyComponent() {
     setMap(null)
   }, [])
 
-  return isLoaded ? (
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={8}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        { /* Child components, such as markers, info windows, etc. */ }
-      </GoogleMap>
-  ) : <></>
+  const renderMap = (locations) => {
+
+    return <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={8}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+    >
+      { /* Child components, such as markers. */ 
+
+        locations.map(loc => {
+          return (
+            <Marker
+              position={{ lat: loc.lat, lng: loc.lng }}
+              label={{ text: loc.text, color: "#2294b3" }}
+            />
+          );
+        })
+
+      }
+      <></>
+    </GoogleMap>
+  }
+
+  return isLoaded ? renderMap(props.locations) : null
 }
 
 export default React.memo(MyComponent)

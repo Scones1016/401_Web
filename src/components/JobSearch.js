@@ -1,5 +1,3 @@
-import React, {useState} from 'react';
-// import "../styles/JobSearch.css";
 
 export default async function JobSearch(params, filter){
 

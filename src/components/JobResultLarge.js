@@ -3,11 +3,6 @@ import "../styles/Main.css";
 
 export default function JobResultLarge(props){
 
-    console.log("call jobResultLarge");
-
-    console.log(props);
-    // console.log(props.data);
-    console.log("printed props");
     
     let datestring = props.data.date.toString();
 
@@ -19,7 +14,6 @@ export default function JobResultLarge(props){
         <div className="">
         {
             <div className={"joblistinglarge"}>
-                {/* <img className="image" style={{width:"30%",height:"30%"}} src={props.data.image}></img> */}
                 <div className={"listingleft"}>
                     <p>{props.data.title}</p>
                     <p>Company: {props.data.companyName}</p>
@@ -32,8 +26,6 @@ export default function JobResultLarge(props){
                     <p>Remote or Not: {props.data.remote}</p>
                 </div>
 
-                {/* <p>Remote or Not: {props.remote}</p> */}
-                {/* <p>Date Posted: {date}</p> */}
                 <div className={"listingright"}>
                     <br></br>
                     <img className={"profimage"} src={props.data.image}></img>

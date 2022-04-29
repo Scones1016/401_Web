@@ -3,6 +3,7 @@ import '../App.css';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Map from './Map.js';
+import Geocoder from 'react-native-geocoding';  
 import JobSearch from '../components/JobSearch';
 import GetImage from '../components/GetImage';
 import JobResult from "../components/JobResult.js";
@@ -11,7 +12,6 @@ import Select from 'react-select';
 
 const availableTypes = [
     { label: 'Full Time', name: "typesearch", value: 'full-time' },
-    // { label: 'Part Time', value: 'this.state.input.search' },
     { label: 'Internship', name: "typesearch", value: 'internship' },
 ];
 
@@ -31,12 +31,12 @@ class Main extends Component{
         JobSearch(params, '')
             .then(response => {
             console.log("starting off with an empty search")
-            // console.log(response);
             
             this.setState({
                 data: response.data,
             });
             this.addImages();
+            this.addMarkers();
         });
     }
     constructor(){
@@ -59,21 +59,20 @@ class Main extends Component{
                 datesearch: "",
             },
             data : [],
-            largejob : []
+            largejob : [],
+            locations : []
         }
         this.onChange = this.onChange.bind(this);
-        // this.dateMaxLengthCheck = this.dateMaxLengthCheck.bind();
         this.onTypesChange = this.onTypesChange.bind(this);
         this.onRemotesChange = this.onRemotesChange.bind(this);
 
         this.handleSearchSubmit = this.handleSearchSubmit.bind();
         this.addImages = this.addImages.bind(this);
+        this.addMarkers = this.addMarkers.bind(this);
 
         this.showTypes = this.showTypes.bind(this);
-        this.closeTypes = this.closeTypes.bind(this);
 
         this.showRemotes = this.showRemotes.bind(this);
-        this.closeRemotes = this.closeRemotes.bind(this);
 
         this.showMap = this.showMap.bind(this);
 
@@ -87,20 +86,10 @@ class Main extends Component{
         console.log(this.state.input);
     }
 
-    // dateMaxLengthCheck = (e) => {
-    //     if (e.target.value.length > 10) {
-    //         e.target.value = e.target.value.slice(0, 10)
-    //     }
-    //     this.state.input[e.target.name] = e.target.value;
-    //     console.log("changing input");
-    //     console.log(this.state.input);
-    // }
-
     async addImages() {
 
         console.log("start addImages");
 
-        // console.log(this.state);
         var jobs = this.state.data;
         for(var i = 0; i < jobs.length; i++)
         {
@@ -111,17 +100,42 @@ class Main extends Component{
                             this.setState({
                                 data: jobs
                             }),
-                            console.log(jobs[i])
                         );
-            // jobs[i]["image"] = imageurl;
-            // console.log(jobs[i]);
         }
 
-        // this.setState({
-        //     data: jobs
-        // });
-
         console.log("end addImages");
+
+    }
+
+    async addMarkers() {
+
+        console.log("start addMarkers");
+
+        var jobs = this.state.data;
+        for(var i = 0; i < jobs.length; i++)
+        {
+            await Geocoder.from(jobs[i].location)
+                .then(latlng => Promise.resolve(latlng))
+                    .then(results => {
+                        var loc = results.results[0].geometry.location;
+                        var statuscode = results.status;
+
+                        loc["text"] = jobs[i].companyName + ": " + jobs[i].title;
+                
+                        if (statuscode == 'OK') {
+                            this.setState({
+                                locations: this.state.locations.concat(loc)
+                            });
+                            console.log("locations updated");
+                            console.log(this.state.locations);
+                        } else {
+                            alert('Geocode was not successful for the following reason: ' + statuscode);
+                            return null;
+                        }
+                    });
+        }
+
+        console.log("end addMarkers");
 
     }
 
@@ -185,6 +199,7 @@ class Main extends Component{
                     data: response.data,
                 });
                 this.addImages();
+                this.addMarkers();
             });
         }
         else
@@ -198,14 +213,11 @@ class Main extends Component{
                     data: response.data,
                 });
                 this.addImages();
+                this.addMarkers();
             });
         }
 
-
-
         console.log("search submitted");
-
-        
 
     }
     
@@ -216,43 +228,20 @@ class Main extends Component{
 
         this.setState({ showTypesBool: !this.state.showTypesBool });
 
-        
-        // this.setState({ showTypesBool: true }, () => {
-        //     document.addEventListener('click', this.closeTypes);
-        // });
-    }
-    closeTypes(event) {
-        // if (!this.typesdropdown.contains(event.target)) {
-        //     this.setState({ showTypesBool: false }, () => {
-        //         document.removeEventListener('click', this.closeTypes);
-        //     });
-        // }
-        // this.setState({ showTypesBool: false }, () => {
-        //     document.removeEventListener('click', this.closeTypes);
-        // });
     }
 
     Types = () => (
         <div
             className="Types"
-            // ref={(element) => {
-            // this.typesdropdown = element;
-            // }}
         >
-
-
 
             <Select
                 placeholder="Choose type"
                 options={availableTypes}
                 isMulti
-                // onChange={e => console.log(e.label, e.value)}
-                // onChange={e => console.log(e)}
                 onChange={this.onTypesChange} 
             />
-            {/* <button name="typesearch" value={this.state.input.search} onClick={this.handleTypeSubmit}> Full Time </button>
-            <button> Part Time </button>
-            <button> Internship </button> */}
+            
         </div>
     )
 
@@ -264,10 +253,6 @@ class Main extends Component{
         }
         else
         {
-            console.log(e[0]);
-            // console.log(e[0].name);
-            // console.log(e[0].value);
-
             this.state.input[e[0].name] = e[0].value;
         }
         
@@ -275,20 +260,7 @@ class Main extends Component{
         console.log(this.state.input);
 
         this.handleSearchSubmit();
-
-        // let typesearch = (this.state.input["typesearch"]);
-
-        // console.log("search for:");
-        // console.log("typesearch: " + typesearch);
-
-        //     JobSearch(typesearch, 'type')
-        //         .then(response => {
-        //         console.log(response);
-
-        //         this.setState({
-        //             data: response.data,
-        //         });
-        //     });
+        
     }
 
     showRemotes(event) {
@@ -296,42 +268,20 @@ class Main extends Component{
         
         this.setState({ showRemotesBool: !this.state.showRemotesBool });
 
-
-        // this.setState({ showRemotesBool: true }, () => {
-        //     document.addEventListener('click', this.closeRemotes);
-        // });
-    }
-    closeRemotes(event) {
-        // if (!this.typesdropdown.contains(event.target)) {
-        //     this.setState({ showRemotesBool: false }, () => {
-        //         document.removeEventListener('click', this.closeRemotes);
-        //     });
-        // }
-        // this.setState({ showRemotesBool: false }, () => {
-        //     document.removeEventListener('click', this.closeRemotes);
-        // });
     }
 
     Remotes = () => (
         <div
             className="Remotes"
-            // ref={(element) => {
-            // this.remotesdropdown = element;
-            // }}
         >
-
 
             <Select
                 placeholder="Remote?"
                 options={availableRemotes}
                 isMulti
-                // onChange={e => console.log(e.label, e.value)}
-                // onChange={e => console.log(e)}
                 onChange={this.onRemotesChange} 
             />
 
-            {/* <button> In Person </button>
-            <button> Remote </button> */}
         </div>
     )
 
@@ -343,10 +293,6 @@ class Main extends Component{
         }
         else
         {
-            console.log(e[0]);
-            // console.log(e[0].name);
-            // console.log(e[0].value);
-
             this.state.input[e[0].name] = e[0].value;
         }
         
@@ -355,19 +301,6 @@ class Main extends Component{
 
         this.handleSearchSubmit();
 
-        // let remotesearch = (this.state.input["remotesearch"]);
-
-        // console.log("search for:");
-        // console.log("remotesearch: " + remotesearch);
-
-        //     JobSearch(remotesearch, 'type')
-        //         .then(response => {
-        //         console.log(response);
-
-        //         this.setState({
-        //             data: response.data,
-        //         });
-        //     });
     }
 
     SalariesResults = () => (
@@ -375,7 +308,6 @@ class Main extends Component{
             <span>
                 <input name="salarysearch" placeholder="Salary" type="number" value={this.state.input.search} 
                     onChange={this.onChange} 
-                    // onBlur={this.handleSalarySubmit} 
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                         this.handleSearchSubmit()
@@ -390,7 +322,6 @@ class Main extends Component{
             <span>
                 <input name="companysearch" placeholder="Company Name" type="text" value={this.state.input.search} 
                     onChange={this.onChange} 
-                    // onBlur={} 
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                         this.handleSearchSubmit()
@@ -405,7 +336,6 @@ class Main extends Component{
             <span>
                 <input name="sizesearch" placeholder="Company Size" type="number" value={this.state.input.search} 
                     onChange={this.onChange} 
-                    // onBlur={} 
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                         this.handleSearchSubmit()
@@ -419,9 +349,7 @@ class Main extends Component{
         <div>
             <span>
                 <input name="datesearch" placeholder="Posted after MM/DD/YYYY" type="date" maxLength="10" value={this.state.input.search} 
-                    // onInput={this.dateMaxLengthCheck}
                     onChange={this.onChange} 
-                    // onBlur={} 
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                         this.handleSearchSubmit()
@@ -434,24 +362,15 @@ class Main extends Component{
     showMap(event) {
         event.preventDefault();
 
-        // console.log(this.state);
-        // console.log("a, showMapBool: " + this.state.showMapBool);
-
         this.setState({ showMapBool: !this.state.showMapBool });
         
-        // console.log("b, showMapBool: " + this.state.showMapBool);
     }
 
 
     makeLarge = (input) => {
-        // if (e.target.value.length > 10) {
-        //     e.target.value = e.target.value.slice(0, 10)
-        // }
-        // this.state.input[e.target.name] = e.target.value;
+        
         console.log("MAKE LARGE");
-        console.log("print largejob");
-        console.log(this.state.largejob);
-        console.log("iinput:");
+        console.log("input:");
         console.log(input);
 
         this.setState(
@@ -467,25 +386,6 @@ class Main extends Component{
 
         this.state.data.length != 0
             ? (
-                // <div>
-                //     <JobResult 
-                //         title={"TITLE"} companyName={"google"} location={"NY"}
-                //         salaryRangeStart = {"1000"} salaryRangeEnd = {"5000"}
-                //         companySize = {"5"} remote={"remote!"}
-                //         date={"2020/02/20"} applyLink={"LINK"}
-
-                //         makeLarge={this.makeLarge}
-                //     ></JobResult>
-
-                //     <JobResult 
-                //         title={"SECOND"} companyName={"microsoft"} location={"la"}
-                //         salaryRangeStart = {"1000"} salaryRangeEnd = {"5000"}
-                //         companySize = {"5"} remote={"remote!"}
-                //         date={"2020/02/20"} applyLink={"LINK"}
-
-                //         makeLarge={this.makeLarge}
-                //     ></JobResult>
-                // </div>
 
                 this.state.data.map(jobdata=>(
                     <JobResult 
@@ -498,7 +398,9 @@ class Main extends Component{
                             
                         makeLarge={this.makeLarge}
                     ></JobResult>
-                    ))
+                    )
+                )
+
             )
             : (
                 null
@@ -512,28 +414,10 @@ class Main extends Component{
         this.state.largejob.length != 0
             ? (
 
-                    // <JobResultLarge
-                    //     title={"LARGE"} companyName={"google"} location={"NY"}
-                    //     salaryRangeStart = {"1000"} salaryRangeEnd = {"5000"}
-                    //     companySize = {"5"} description={"jobdata.description"} 
-                    //     type={"fulltime"} remote={"remote!"}
-                    //     date={"2020/02/20"} applyLink={"LINK"}
-                    // ></JobResultLarge>
+                <JobResultLarge
+                    data={this.state.largejob}
+                ></JobResultLarge>
 
-                    <JobResultLarge
-                        data={this.state.largejob}
-                    ></JobResultLarge>
-
-
-
-                    // <JobResultLarge 
-                    //     title={largejob.title} companyName={largejob.companyName} location={largejob.location}
-                    //     salaryRangeStart = {largejob.salaryRangeStart} salaryRangeEnd = {largejob.salaryRangeEnd}
-                    //     companySize = {largejob.companySize} description={largejob.description}
-                    //     type={largejob.type} remote={largejob.remote}
-                    //     date={largejob.date} applyLink={largejob.applyLink}
-                    // ></JobResultLarge>
-                
             )
             : (
                 null
@@ -575,27 +459,12 @@ class Main extends Component{
                 <div className="Filters">
 
                     <div className="filter">
-                        {/* <button className="filter-button" onClick={this.showTypes}>
-                        Types
-                        </button>
-                        {
-                            this.state.showTypesBool
-                                ? ( <this.Types /> )
-                                : ( null )
-                        } */}
 
                         <this.Types />
+
                     </div>
 
                     <div className="filter">
-                        {/* <button className="filter-button" onClick={this.showRemotes}>
-                        Remote
-                        </button>
-                        {
-                            this.state.showRemotesBool
-                                ? ( <this.Remotes /> )
-                                : ( null )
-                        } */}
 
                         <this.Remotes />
 
@@ -631,20 +500,21 @@ class Main extends Component{
 
 
 
-                <button onClick={this.showMap}>
+                <button class="mapbutton" onClick={this.showMap}>
                     Show Map
                     </button>
                         {
                         this.state.showMapBool
-                            ? ( <Map></Map> )
+                            ? (
+                                <div class="mapstyling">
+                                    <Map locations={this.state.locations}></Map> 
+                                </div>
+                              )
                             : null
                         }
                         
                 <br/>
                 <br/>
-                <br/>
-                
-
 
                 
 

@@ -3,15 +3,11 @@ import "../styles/Main.css";
 
 export default function JobResult(props){
 
-    console.log("call jobResult");
-    // console.log(props.makeLarge);
 
     let datestring = props.date.toString();
 
     let date = datestring.substring(0, 4) + "/" + datestring.substring(4, 6) + "/" + datestring.substring(6, 8);
-          
-console.log("props.image:")
-console.log(props.image)
+
     return(
 
         <div className="">
@@ -24,7 +20,6 @@ console.log(props.image)
                     <p>Salary: {props.salaryRangeStart} to {props.salaryRangeEnd}</p>
                     <p>Company Size: {props.companySize}</p>
                 </div>
-                {/* <p>Remote or Not: {props.remote}</p> */}
                 <div className={"listingright"}>
                     <br></br>
                     <img className={"profimage"} src={props.image}></img>
